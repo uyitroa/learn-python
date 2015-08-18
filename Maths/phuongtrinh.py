@@ -1,7 +1,4 @@
 # Equation
-
-#Import library
-import math
 tim=int(input("Enter the number a: "))
 an=input("Enter the hide number(x): ")
 ope=input("+.   -.   *.   /.: ")
