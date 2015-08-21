@@ -1,3 +1,4 @@
+# Import library
 import random
 #The program of game
 def play(min,max):
@@ -27,18 +28,23 @@ def play(min,max):
 			else:
 				max=x-1
 #Starting game
+# Choose tyour level.
 print("Choose the level:")
 print("press 1.Beginner(0-100)    2.Semi-pro(0-1000)     3.Pro(0-10000)    4.Other")
 choose=input()
 choose=int(choose)
 if choose==1:
+# Level beginner
 	play(0,100)
 elif choose==2:
+# Level semi-pro	
 	play(0,1000)
 elif choose==3:
+# Level Pro	
 	play(0,10000)
 elif choose==4:
-        print("Input the minium  number:")
+# Other level        
+	print("Input the minium  number:")
         min=input()
         min=int(min)
         print("Input the maxium number:")
