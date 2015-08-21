@@ -7,7 +7,7 @@ def clock(s):
 		print("\aTime:"+str(counter)+"sec.")
 print("Enter the time(minute) for count:")
 tim=input()
-tim=int(tim)
+tim=float(tim)
 print("Enter to start:")
 enter=input()
 clock(tim)
