@@ -52,7 +52,7 @@ hang=['''
 / \  |
      |
      |
-==========''',''']
+==========''']
 a=1
 choose=random.choice(Word)
 # The length of the secret word
