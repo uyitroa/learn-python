@@ -1,4 +1,4 @@
-# Guess a word
+# Guess a word and it has hangman
 # Import library
 import random
 # Make list of word
@@ -88,7 +88,7 @@ for letter in range(x):
 		print("It's wrong!")
 		print(str(hang[a]))
 		a+=1
-		if a >= len(hang):
+		if a==len(hang):
 			print("YOU LOSE.")
 			break
-	guess=input("Guess again the letter: ")
+	guess=input("Enter again a letter")
