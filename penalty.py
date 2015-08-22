@@ -1,4 +1,12 @@
-# Game of goal
+""" Game of goal
+Help:
+	For shoot, you must enter a long/short string, and not a number, ex: if you enter a long string, you have a strong shoot. And if you have a short string, you will have a weak shoot.
+	This is the ball: o
+	This is the goalie: ¶
+			 	–\++\ 
+        This is the goal:      ¶  ||||                                  
+				–/++/
+"""
 # Import library
 import random
 far=[' o                                            ','  o                                           ','   o                                          ','    o                                         ','     o                                        ','         o                                    ','          o                                   ','                  o                           ']
@@ -7,7 +15,7 @@ blanks=' '*len(far)
 newBlanks=blanks + guess + ' ¶  ||||'
 o=guess.index('o')
 goals=newBlanks.count(" ",o, len(newBlanks))
-goal=0.75
+goals*=0.75
 print(str(goals))
 def goal():
 	print("\t\t\t\t\t\t\t–\++\ ")
