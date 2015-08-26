@@ -49,6 +49,14 @@ hang=['''
  |   |
  O   |
 /|\  |
+/    |
+     |
+     |
+==========''',''' 
+ +---+
+ |   |
+ O   |
+/|\  |
 / \  |
      |
      |
@@ -64,16 +72,15 @@ guess=input("Guess the letter of the secret word: ")
 x=100000000000000000000
 # Make the time for count
 counter=0
-def whi(guess):	
-	while len(guess)>1 or guess not in 'qwertyuiopasdfghjklzxcvbnm':
+for x in range(x):
+	while len(guess)>1 or guess not in 'qwertyuiopasdfghjklzxcvbnm' or guess == "" or blanks.find(guess) != -1:
 		if len(guess)>1:
 			print("Guess only a letter in one time.")
-		if guess not in 'qwertyuiopasdfghjklzxcvbnm':
+		if guess not in 'qwertyuiopasdfghjklzxcvbnm' or guess == "":
 			print("Guess only the letter and no other.")
-		guess=input("Guess a letter of the secret word: ")
-	return guess
-for letter in range(x):
-	whi(guess)
+		if blanks.find(guess) != -1:
+			print("Guess only the letter hasn't guessed.")
+		guess = input("Guess again the letter: ")
 	if guess in choose:
 		if counter==len(choose)-1:
 			print("Congratulation!You won!")
@@ -90,5 +97,6 @@ for letter in range(x):
 		a+=1
 		if a==len(hang):
 			print("YOU LOSE.")
+			print("The secret word is "+str(choose))
 			break
 	guess=input("Enter again a letter: ")

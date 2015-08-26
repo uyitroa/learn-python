@@ -7,7 +7,6 @@ def t(s):
 # Make list of word
 Word=['buy','dolphin','machine','mouse','heart','lamp','clock','table','key','water','fire','orange','house','horse']
 choose=random.choice(Word)
-choose='lamp'
 # Xoay chiếc nón
 non=random.randint(1,13)
 #  Print the point of the player.
@@ -31,25 +30,26 @@ if non<=9:
 	non*=100
 	print("You will maybe have "+str(non)+" points")
 elif non==13:
+	non = 0
 	turn='second'
 	print("Opps, you was lost your turn.")
 else:
 	print("Not thing change.")
+	non = 0
 # The length of the secret word
 blanks='_ '*len(choose)
 print("Secret word: "+str(blanks))
 #Guess the letter
 guess=input("Guess the letter of the secret word: ")
-def whi(guess):	
-	while len(guess)>1 or guess not in 'qwertyuiopasdfghjklzxcvbnm':
+for x in range(x):	
+	while len(guess)>1 or guess not in 'qwertyuiopasdfghjklzxcvbnm' or guess == "" or blanks.find(guess,0,len(blanks)) != -1:
 		if len(guess)>1:
 			print("Guess only a letter in one time.")
-		if guess not in 'qwertyuiopasdfghjklzxcvbnm':
+		if guess not in 'qwertyuiopasdfghjklzxcvbnm' or guess == "":
 			print("Guess only the letter and no other.")
+		if blanks.find(guess,0,len(blanks)) != -1:
+			print("Guess only the letter hasn't guess.")
 		guess=input("Guess a letter of the secret word: ")
-	return guess
-for letter in range(x):
-	whi(guess)
 	if guess in choose:
 		count+=non 
 		if turn=='first':
@@ -69,14 +69,12 @@ for letter in range(x):
 			print("You have "+str(count2)+" points")
 		if counter==len(choose)-1:
 			if turn=='first':
-				print("Congratulation! You won! You have total "+str(count1)+" points")
+				print("Congratulation! You won! You have total "+str(count1)+" points. The second player has "+str(count2)+" points.")
 			else:
-				print("Congratulation! You won! You have total "+str(count2)+" points")
+				print("Congratulation! You won! You have total "+str(count2)+" points. The first player has "+str(count1)+" points.")
 			break
 		counter+=1
 		letterIndex=choose.index(guess)
-		newBlanks=blanks[:letterIndex*2] + guess + blanks[letterIndex*2+1:]	
-		newBlanks=blanks
 		blanks=blanks[:letterIndex*2] + guess + blanks[letterIndex*2+1:]
 		print()
 		print("Secret word: "+str(blanks))
