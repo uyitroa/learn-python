@@ -158,7 +158,7 @@ def my_Blanks():
 # Guess a letter
 def secretGuess():
 	#Guess the letter
-	guess = input("Guess the letter of the secret word: ")
+	guess = input("Guess: ")
 	return guess
 
 # Starting program
@@ -174,7 +174,7 @@ while playAgain == 'yes':
 	count2 = 0
 	# Set a turn
 	turn = 'first'
-	
+	answer = None
 	# Use function
 	choose = chooseWord()
 	non = turnNon()
@@ -183,17 +183,29 @@ while playAgain == 'yes':
 
 	# Make a infinty loop
 	while 0 != 1:
+		if answer == 'yes':
+			if guess == choose:
+				if turn == 'first':
+					playWin(count1,'second',count2)
+				else:
+					playWin(count2,'first',count1)
+				break
+			else:
+				turn = guessIncorrect(turn)
 		# Check guess
 		while len(guess)>1 or guess not in 'qwertyuiopasdfghjklzxcvbnm' or guess == "" or blanks.find(guess,0,len(blanks)) != -1:
+			if answer == 'yes':
+				break
 			guess = check(guess)
 		
 		# If the player has a correct guess.
 		guess = str(guess)
 		if guess in choose:
-			if turn == 'first':
-				count1 = guessCorrect(non)
-			else:
-				count2 = guessCorrect(non)
+			if answer != 'yes':
+				if turn == 'first':
+					count1 = guessCorrect(non)
+				else:
+					count2 = guessCorrect(non)
 		# If the player has incorrect guess.
 		else:
 			turn  = guessIncorrect(turn)
@@ -220,6 +232,8 @@ while playAgain == 'yes':
 		elif turn == 'second':
 			count2 = playPoint(count2,'first')
 		
+		if blanks.count("_ ") <= 3:
+			answer = input("Do you want to guess the word?(yes or no) ")
 		guess = secretGuess()
 	# Ask the player if he want to play again or not.
 	playAgain = input("Play again? (yes or no): ")
