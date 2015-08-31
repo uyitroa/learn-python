@@ -20,7 +20,6 @@ Word=['book','ball','door','football','game','buy','dolphin','machine','mouse','
 # Random for choose the secret word
 def chooseWord():
 	choose = random.choice(Word)
-	choose = 'football'
 	return choose
 
 # Random point
@@ -167,7 +166,6 @@ def secretGuess():
 playAgain = 'yes'
 while playAgain == 'yes':
 	# Reset
-	# Set
 	# Make the time for count
 	counter = 0
 	# Point of first player
