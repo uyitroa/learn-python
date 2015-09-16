@@ -9,6 +9,7 @@ playAgain = 'yes'
 # Set blanks for secret word
 blanks = '_ '
 secret = 0
+hasgot = 'False'
 # Open file
 list = open("data.txt","r")
 # Read file	
@@ -94,6 +95,7 @@ def guessCorrect():
 	m = -1
 	c = 0
 	b = -1
+	hasgot = 'False'
 	# ask the player of the position of the letter
 	inde = input("Enter the position of this letter in the word: ")
 	# if there more than one letter so i make a list of the position of letters
@@ -120,26 +122,10 @@ def guessCorrect():
 	print(str(blanks))
 	# if the position of the letter/letters has guessed is/are diffrent of the word choosed
 	while chooseWord.find(chooseLetter) != ind[0]:
-		chooseLette.remove(chooseword)
-		# 'rechoose'
-		chooseWord = random.choice(chooseLette)
-		chooseword = chooseWord	
-	while len(ind) != c:# guess only words has number of same letter == of the secret word
-		print("chooseLette: ",chooseLette)
-		print("chooseWord: ",chooseWord)
-		for qwe in range(len(chooseWord)):# count the repeat charater of the word
-			bv = chooseWord.find(chooseLetter,qwe,len(chooseWord) - 1)
-			if bv == -1:
-				break
-			if bv != -1:
-				if bv != b:
-					b = bv
-					c = c + 1
-		if len(ind) != c: # if the number of the same letter is not == the same letter of the secret word
 			chooseLette.remove(chooseword)
+			# 'rechoose'
 			chooseWord = random.choice(chooseLette)
 			chooseword = chooseWord
-	
 	# return
 	return secret
 # Start program
@@ -156,7 +142,9 @@ chooseword = chooseWord
 chooseLetter = ChooseLetter()
 while playAgain == 'yes':
 	# Make a loop infinity
-	while 0 != 1:
+	while blanks.find("_") != -1:
+		print("dif: ",dif)
+		print("chooseLette: ",chooseLette)
 		# ask the player the letter's computer has guessed is correct or not
 		answer = input("Is '"+str(chooseLetter)+"' a letter in the secret word? (y or n) ")
 		# if it is corect
@@ -172,16 +160,29 @@ while playAgain == 'yes':
 		else:
 			# remove the word's computer has choosed
 			chooseLette.remove(chooseword)
-			for word in range(len(chooseLette)):
-				if len(chooseLette) - 1 <= word:
+			for word in range(len(chooseLette)):# remove all word has the chooseLetter
+				if len(chooseLette) <= word:
+					if chooseLetter in chooseLette[len(chooseLette) - 1]:
+						chooseLette.remove(chooseLette[len(chooseLette) - 1])
 					break
 				if chooseLetter in chooseLette[word]:
 					chooseLette.remove(chooseLette[word])
 			chooseWord = random.choice(chooseLette)
 			chooseword = chooseWord
+		while hasgot == 'False':
+			for bl in range(len(blanks)):
+				if blanks[bl] != '_' or blanks[bl] != ' ':
+					for let in range(len(chooseWord)):
+						if chooseWord[let] == blanks[bl]:
+							hasgot = 'True'
+							break
+			if hasgot == 'False':
+				chooseLette.remove(chooseword)
+				chooseWord = random.choice(chooseLette)
+				chooseword = chooseWord
 		# choose letter
 		chooseLetter = ChooseLetter()
-		while chooseLetter in blanks:
+		while chooseLetter in blanks:# if it 
 			chooseLetter = ChooseLetter()
 	# ask the player want to play again or not
 	playAgain = input("Do you want to play again? (yes or no) ")
@@ -193,6 +194,7 @@ while playAgain == 'yes':
 		playAgain = 'yes'
 		blanks = '_ '
 		secret = 0
+		hasgot = 'False'
 		# open file
 		list = open("data.txt","r")
 		# read file
