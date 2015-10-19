@@ -1,4 +1,5 @@
 # import library
+# import binary to ascii
 import binascii
 #import os
 #open file, this file contain the table of the code
