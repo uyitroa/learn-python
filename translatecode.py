@@ -1,10 +1,13 @@
+# import library
 import binascii
-import os
-table = open("code.txt","r")
-table = table.read()
+#import os
+#open file, this file contain the table of the code
+#table = open("code.txt","r")
+#read  file
+#table = table.read()
 again = 'yes'
 while again == 'yes':
-	print("Table:\n",table)
+	#print("Table:\n",table)
 	system = int(input("1.Bina\n2.Decimal\n3.Hexa\nYour choice: "))
 	if system == 1:
 		bit = int(input("Code: "))
@@ -15,8 +18,14 @@ while again == 'yes':
 		code = n.to_bytes((n.bit_length() + 7) // 8, 'big').decode()
 		print("Translate: ",code)
 	elif system == 2:
+		print("Each code you must space!!! Ex(99 100 98 97)")
 		bit = input("Code: ")
-		code = chr(int(bit))
+		bit = bit.split(" ")
+		for x in range(len(bit)):
+			if x == 0:
+				code = str(chr(int(bit[x])))
+			else:
+				code = code + str(chr(int(bit[x])))
 		print("Translate: ",code)
 	else:
 		bit = input("Code: ")

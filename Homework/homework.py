@@ -66,20 +66,20 @@ def fal():
 #Program
 def playgame():
 	instro()
-	a=choice()
+	a = choice()
 	check(a)
 #Start
 playgame()
 
  
 print("Do you want to play again? 'yes' or 'no'")
-anwser=input()
-if anwser=='yes':
-	while anwser=='yes':
+anwser = input()
+if anwser == 'yes':
+	while anwser == 'yes':
 		playgame()
 		print("Do you want to play again? 'yes' or 'no'")
-		anwser=input()
-		if anwser=='no':
+		anwser = input()
+		if anwser == 'no':
 			print("See you later")
 else:
 	print("See you later")	

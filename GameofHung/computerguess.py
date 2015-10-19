@@ -95,9 +95,10 @@ def guessCorrect():
 	m = -1
 	c = 0
 	b = -1
-	hasgot = 'False'
 	# ask the player of the position of the letter
 	inde = input("Enter the position of this letter in the word: ")
+	while not inde.isdigit():
+		inde = input("Enter the position of this letter in the word: ")
 	# if there more than one letter so i make a list of the position of letters
 	ind = inde.split(";")
 	# count how many total cahrater the computer has guess
@@ -120,18 +121,21 @@ def guessCorrect():
 			blanks = blanks[:ind[a] * 2] + chooseLetter + blanks[ind[a] * 2 + 1:]
 	#show blanks
 	print(str(blanks))
-	# if the position of the letter/letters has guessed is/are diffrent of the word choosed
-	while chooseWord.find(chooseLetter) != ind[0]:
-			chooseLette.remove(chooseword)
-			# 'rechoose'
-			chooseWord = random.choice(chooseLette)
-			chooseword = chooseWord
 	for x in range(len(chooseLette)):
-		print(str(chooseLette))
-		if x == len(chooseLette):
+		print(x)
+		print(len(chooseLette))
+		if x >= len(chooseLette) - 1:
+			break
+		if chooseLette[x].find(chooseLetter) != ind[0]:
+			chooseLette.remove(chooseLette[x])
+	while chooseword.find(chooseLetter) != ind[0]:
+		chooseWord = random.choice(chooseLette)
+		chooseword = chooseWord
+	for x in range(len(chooseLette)):
+		if x >= len(chooseLette) - 1:
 			break
 		if chooseLetter not in chooseLette[x]:
-			chooseLette.remove(chooseword) 
+			chooseLette.remove(chooseLette[x])
 	# return
 	return secret
 # Start program
@@ -148,10 +152,16 @@ chooseword = chooseWord
 chooseLetter = ChooseLetter()
 print(str(chooseLette))
 while playAgain == 'yes':
+	answer = None
 	# Make a loop infinity
 	while blanks.find("_") != -1:
 		# ask the player the letter's computer has guessed is correct or not
-		answer = input("Is '"+str(chooseLetter)+"' a letter in the secret word? (y or n) ")
+		while (answer != 'y' or answer != 'n'):
+			answer = input("Is '"+str(chooseLetter)+"' a letter in the secret word? (y or n) ")
+			if answer == 'y':
+				break
+			if answer == 'n':
+				break
 		# if it is corect
 		if answer == 'y':
 			secret = guessCorrect()

@@ -63,6 +63,7 @@ hang=['''
 ==========''']
 a=1
 choose=random.choice(Word)
+choose = 'clock'
 # The length of the secret word
 blanks='_ '*len(choose)
 print("Secret word: "+str(blanks))
@@ -81,16 +82,21 @@ for x in range(x):
 		if blanks.find(guess) != -1:
 			print("Guess only the letter hasn't guessed.")
 		guess = input("Guess again the letter: ")
-	if guess in choose:
-		if counter==len(choose)-1:
+	if guess in choose:	
+		m = -1
+		for fi in range(len(choose)):
+			my_guess = choose.find(guess,fi,len(choose))
+			if my_guess != -1:
+				if my_guess != m:
+					m = my_guess
+					counter+=1
+					blanks=blanks[:m*2] + guess + blanks[m*2+1:]			
+					counter+=1
+		print("Secret word: "+str(blanks))
+		if counter==len(choose):
 			print("Congratulation!You won!")
 			break
-		counter+=1
-		letterIndex=choose.index(guess)
-		newBlanks=blanks[:letterIndex*2] + guess + blanks[letterIndex*2+1:]	
-		newBlanks=blanks
-		blanks=blanks[:letterIndex*2] + guess + blanks[letterIndex*2+1:]
-		print("Secret word: "+str(blanks))
+
 	else:
 		print("It's wrong!")
 		print(str(hang[a]))

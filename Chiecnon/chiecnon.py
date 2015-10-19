@@ -7,6 +7,7 @@ def t(s):
 # Make list of word
 Word=['buy','dolphin','machine','mouse','heart','lamp','clock','table','key','water','fire','orange','house','horse']
 choose=random.choice(Word)
+choose = 'machine'
 # Xoay chiếc nón
 non=random.randint(1,13)
 #  Print the point of the player.
@@ -42,9 +43,7 @@ print("Secret word: "+str(blanks))
 #Guess the letter
 guess=input("Guess the letter of the secret word: ")
 for x in range(x):	
-	while len(guess)>1 or guess not in 'qwertyuiopasdfghjklzxcvbnm' or guess == "" or blanks.find(guess,0,len(blanks)) != -1:
-		if len(guess)>1:
-			print("Guess only a letter in one time.")
+	while guess not in 'qwertyuiopasdfghjklzxcvbnm' or guess == "" or blanks.find(guess,0,len(blanks)) != -1:
 		if guess not in 'qwertyuiopasdfghjklzxcvbnm' or guess == "":
 			print("Guess only the letter and no other.")
 		if blanks.find(guess,0,len(blanks)) != -1:

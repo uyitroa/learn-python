@@ -2,7 +2,7 @@
 # Import library
 import random
 # Make list of word
-Word=['buy','dolphin','machine','mouse','heart','lamp','clock','table','key','water','fire','orange','house','horse']
+Word=['acheter','dophin','machine','souris','coeur','lampe','horloge','table','cle','eau','feu','orange','maison','cheval']
 # Make a list of hangman
 hang=['''
  +---+
@@ -65,7 +65,7 @@ a=1
 choose=random.choice(Word)
 # The length of the secret word
 blanks='_ '*len(choose)
-print("Secret word: "+str(blanks))
+print("Mot secret: "+str(blanks))
 #Guess the letter
 guess=input("Guess the letter of the secret word: ")
 # Make a loop infinity
@@ -73,28 +73,35 @@ x=100000000000000000000
 # Make the time for count
 counter=0
 for x in range(x):
-	while len(guess)>1 or guess not in 'qwertyuiopasdfghjklzxcvbnm' or guess == "" or blanks.find(guess):
+	while len(guess)>1 or guess not in 'qwertyuiopasdfghjklzxcvbnm' or guess == "" or blanks.find(guess) != -1:
 		if len(guess)>1:
-			print("Guess only a letter in one time.")
+			print("Devinez seulement le lettre, pas mot.")
 		if guess not in 'qwertyuiopasdfghjklzxcvbnm' or guess == "":
-			print("Guess only the letter and no other.")
-		if blanks.find(guess):
-			print("Guess only the letter hasn't guessed.")
-		guess = input("Guess again the letter: ")
-	if guess in choose:
-		if counter==len(choose)-1:
-			print("Congratulation!You won!")
+			print("Devinez seulement le lettre..")
+		if blanks.find(guess) != -1:
+			print("Devinez seulement les lettres ne sont pas deviné.")
+		guess = input("Redevinez: ")
+	if guess in choose:	
+		m = -1
+		for fi in range(len(choose)):
+			my_guess = choose.find(guess,fi,len(choose))
+			if my_guess != -1:
+				if my_guess != m:
+					m = my_guess
+					counter+=1
+					blanks=blanks[:m*2] + guess + blanks[m*2+1:]			
+					counter+=1
+		print("Mot secret: "+str(blanks))
+		if counter==len(choose):
+			print("Bravo! Vous avez gagné.!")
 			break
-		counter+=1		
-		letterIndex=choose.index(guess)
-		blanks=blanks[:letterIndex*2] + guess + blanks[letterIndex*2+1:]	
-		print("Secret word: "+str(blanks))
+
 	else:
-		print("It's wrong!")
+		print("Faux!")
 		print(str(hang[a]))
 		a+=1
 		if a==len(hang):
-			print("YOU LOSE.")
-			print("The secret word is "+str(choose))
+			print("Vous avez perdu!.")
+			print("Le mot secret est: "+str(choose))
 			break
-	guess=input("Enter again a letter: ")
+	guess=input("Devinez un lettre: ")

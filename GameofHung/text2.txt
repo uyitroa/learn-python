@@ -1,0 +1,4 @@
+mytext = open("text.txt","r")
+cmd = mytext.read()
+print(cmd)
+

@@ -120,96 +120,97 @@ def guessCorrect():
 			blanks = blanks[:ind[a] * 2] + chooseLetter + blanks[ind[a] * 2 + 1:]
 	#show blanks
 	print(str(blanks))
-	while hasgot == 'False':
-		for bl in range(len(blanks)):
-			if blanks[bl] != '_' or blanks[bl] != ' ':
-				for let in range(len(chooseWord)):
-					if chooseWord[let] == blanks[bl]:
-						hasgot = 'True'
-						break
-		if hasgot == 'False':
-			chooseLette.remove(chooseword)
-			chooseWord = random.choice(chooseLette)
-			chooseword = chooseWord
 	# if the position of the letter/letters has guessed is/are diffrent of the word choosed
 	while chooseWord.find(chooseLetter) != ind[0]:
 			chooseLette.remove(chooseword)
 			# 'rechoose'
 			chooseWord = random.choice(chooseLette)
 			chooseword = chooseWord
+	for x in range(len(chooseLette)):
+		print(str(chooseLette))
+		if x == len(chooseLette):
+			break
+		if chooseLetter not in chooseLette[x]:
+			chooseLette.remove(chooseword) 
 	# return
 	return secret
 # Start program
-def startgame():
-	# Set
-	# counter of the correct character of secret word
-	counter = 0
-	playAgain = 'yes'
-	# Set blanks for secret word
-	blanks = '_ '
-	secret = 0
-	hasgot = 'False'
-	# Open file
-	list = open("data.txt","r")
-	# Read file
-	lis = list.read()
-	# change all charater to normal mode
-	lis = lis.lower()
-	# remove all special cahrater
-	lis = lis.replace("."," ")
-	lis = lis.replace(","," ")
-	# remove the \n in the text
-	lis = lis.replace("\n"," ")
-	# make a list of all charater of the text
-	mylist = lis.split(" ")
-	# make another list
-	dif = copy.copy(mylist)
-	# open file data.txt
-	dif = openfile()
-	# ask the player the nubmer of the secret word
-	secret = int(input("Enter the number of the secret word: "))
-	# make blanks of the secret word
-	blanks = '_ ' * secret
-	# choose word
-	ChooseWord()
-	chooseword = chooseWord
-	# choose letter
-	chooseLetter = ChooseLetter()
-	while playAgain == 'yes':
-		# Make a loop infinity
-		while blanks.find("_") != -1:
-			print("dif: ",dif)
-			print("chooseLette: ",chooseLette)
-			# ask the player the letter's computer has guessed is correct or not
-			answer = input("Is '"+str(chooseLetter)+"' a letter in the secret word? (y or n) ")
-			# if it is corect
-			if answer == 'y':
-				secret = guessCorrect()
-				# remove letter it has guessed
-				chooseWord = chooseWord.replace(chooseLetter," ")
-				# if computer has guessed all
-				if counter == secret:
-					print("YES! I won! HAHAHAHAHAHA.....")
-					break
-			# if the answer of the player is no
-			else:
-				# remove the word's computer has choosed
-				chooseLette.remove(chooseword)
-				for word in range(len(chooseLette)):# remove all word has the chooseLetter
-					if len(chooseLette) <= word:
-						if chooseLetter in chooseLette[len(chooseLette) - 1]:
-							chooseLette.remove(chooseLette[len(chooseLette) - 1])
-						break
-					if chooseLetter in chooseLette[word]:
-						chooseLette.remove(chooseLette[word])
-				chooseWord = random.choice(chooseLette)
-				chooseword = chooseWord
-			# choose letter
-			chooseLetter = ChooseLetter()
-			while chooseLetter in blanks:# if it 
-				chooseLetter = ChooseLetter()
+# open file data.txt
+dif = openfile()
+# ask the player the nubmer of the secret word
+secret = int(input("Enter the number of the secret word: "))
+# make blanks of the secret word
+blanks = '_ ' * secret
+# choose word
+ChooseWord()
+chooseword = chooseWord
+# choose letter
+chooseLetter = ChooseLetter()
+print(str(chooseLette))
 while playAgain == 'yes':
-	startgame()
+	# Make a loop infinity
+	while blanks.find("_") != -1:
+		# ask the player the letter's computer has guessed is correct or not
+		answer = input("Is '"+str(chooseLetter)+"' a letter in the secret word? (y or n) ")
+		# if it is corect
+		if answer == 'y':
+			secret = guessCorrect()
+			# remove letter it has guessed
+			chooseWord = chooseWord.replace(chooseLetter," ")
+			# if computer has guessed all
+			if counter == secret:
+				print("YES! I won! HAHAHAHAHAHA.....")
+				break
+		# if the answer of the player is no
+		else:
+			# remove the word's computer has choosed
+			chooseLette.remove(chooseword)
+			for word in range(len(chooseLette)):# remove all word has the chooseLetter
+				if len(chooseLette) <= word:
+					if chooseLetter in chooseLette[len(chooseLette) - 1]:
+						chooseLette.remove(chooseLette[len(chooseLette) - 1])
+					break
+				if chooseLetter in chooseLette[word]:
+					chooseLette.remove(chooseLette[word])
+			chooseWord = random.choice(chooseLette)
+			chooseword = chooseWord
+		# choose letter
+		chooseLetter = ChooseLetter()
+		while chooseLetter in blanks:# if it 
+			chooseLetter = ChooseLetter()
 	# ask the player want to play again or not
 	playAgain = input("Do you want to play again? (yes or no) ")
-	
+	# if the player want to play again
+	if playAgain == 'yes':
+		# Set
+		# counter of the correct character of secret word
+		counter = 0
+		playAgain = 'yes'
+		blanks = '_ '
+		secret = 0
+		hasgot = 'False'
+		# open file
+		list = open("data.txt","r")
+		# read file
+		lis = list.read()
+		# make all charater to the normal mode
+		lis = lis.lower()
+		# no charater spacial
+		lis = lis.replace("."," ")
+		lis = lis.replace(","," ")
+		lis = lis.replace("\n"," ")
+		# make a list of the word's text
+		mylist = lis.split(" ")
+		# make another list same the last one
+		dif = copy.copy(mylist)
+		# open file
+		dif = openfile()		
+		# ask the number of the secret word
+		secret = int(input("Enter the number of the secret word: "))
+		# set blanks's secret word
+		blanks = '_ ' * secret
+		# choose word
+		ChooseWord()
+		# chooseletter
+		chooseLetter = ChooseLetter()
+

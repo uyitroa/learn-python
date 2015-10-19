@@ -41,7 +41,7 @@ def cal():
 		if choose=='=':
 			break
 		a=input()
-		a=int(a)	
+		a=float(a)	
 
 # start
 cal()

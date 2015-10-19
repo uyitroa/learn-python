@@ -45,16 +45,16 @@ def turnNon():
 		print("Not thing change.")
 		non = 0
 	return non
-
 # Calcul the point of the player
 def score(currentPoint,t_value):
+	currentPoint = currentPoint
 	if t_value == 2:
 		currentPoint = currentPoint * 2
 	else:
 		currentPoint = currentPoint + t_value
 	
 	return currentPoint
-print(str(score(100,200)))
+
 # Print the point of the player
 def currentPoint(cont):
 	print("You are having ",cont," points")
@@ -65,7 +65,7 @@ def playPoint(coi,tun):
 	if non == 10:
 		print("You will maybe have double point. You will have maybe "+str(coi*2)+" points.")
 	elif non == 11:
-		coi /= 2
+		coi = coi / 2
 		print("You was lost a half of your point. You have now "+str(coi)+" points")
 	elif non == 12:
 		coi = 0
@@ -103,14 +103,14 @@ def guessCorrect(non):
 	# If the turn is of the first player. 
 	if turn == 'first':
 		if non<=9:
-			non *= 100
+			non = non * 100
 			count1 = score(count1,non)
 		elif non==10:
 			count1 = score(count1,2)
 	# If the turn is of the second player.
 	else:
 		if non<=9:
-			non *= 100
+			non = non * 100
 			count2 = score(count2,non)
 		elif non==10:
 			count2 = score(count2,2)
@@ -132,7 +132,10 @@ def guessCorrect(non):
 		else:
 			playWin(count2,"first",count1)
 		return
-
+	if turn == 'first':
+		return count1
+	else:
+		return count2
 # If the player has a incorrect guess
 def guessIncorrect(turn):
 	print("It's wrong!")
@@ -173,13 +176,13 @@ while playAgain == 'yes':
 	count2 = 0
 	# Set a turn
 	turn = 'first'
-	print(str(count1))
+	
 	# Use function
 	choose = chooseWord()
 	non = turnNon()
 	blanks = my_Blanks()
 	guess = secretGuess()
-	print(str(count1))
+
 	# Make a infinty loop
 	while 0 != 1:
 		# Check guess
@@ -193,23 +196,20 @@ while playAgain == 'yes':
 				count1 = guessCorrect(non)
 			else:
 				count2 = guessCorrect(non)
-			print(str(score(count1,non)))
-			print(count1, count2)
 		# If the player has incorrect guess.
 		else:
 			turn  = guessIncorrect(turn)
-			print(count1, count2)
+		if counter == len(choose):
+			break
 		# Quay chiếc nón
 		non = random.randint(1,13)
 		# The turn is of the first player
 		
 		if turn == 'first':
 			currentPoint(count1)
-			print(str(count1))
 		# The turn is of the second player
 		else:
 			currentPoint(count2)
-			print(str(count2))
 		print("Turning...")
 		t(2)
 		
@@ -218,10 +218,10 @@ while playAgain == 'yes':
 		
 		elif turn == 'first':
 			count1 = playPoint(count1,'second')
-			print(str(count1))
+		
 		elif turn == 'second':
 			count2 = playPoint(count2,'first')
-			print(str(count2))
+		
 		guess = secretGuess()
 	# Ask the player if he want to play again or not.
 	playAgain = input("Play again? (yes or no): ")
