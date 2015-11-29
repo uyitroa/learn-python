@@ -44,10 +44,16 @@ def tank2c2(x,y):
 	tank2(x,y)
 	pygame.draw.polygon(DISPLAYSURF, BLACK, ((x,y), (x,y+25), (x-25,y)))
 	pygame.draw.polygon(DISPLAYSURF, BLACK, ((x+100,y), (x+100,y+25), (x+125,y)))
+def tank2c3(x,y):
+	pygame.draw.circle(DISPLAYSURF, BLACK, (x + 45,y), 50,50)
+	pygame.draw.rect(DISPLAYSURF, BLACK, (x+35,y -100, 15,50))
+def tank2c4(x,y):
+	pygame.draw.polygon(DISPLAYSURF, BLACK, ((x,y+50),(x+100,y+50),(x+50,y),(x+35,y)))
+	pygame.draw.rect(DISPLAYSURF, BLACK, (x+35,y - 25, 15,50))
 def fire(x,y):
 	pygame.draw.circle(DISPLAYSURF, BLACK, (x,y), 5, 0)
-def font(e,g,b,x,y):
-	fontObj = pygame.font.Font('freesansbold.ttf', 32)
+def font(e,g,b,x,y,s):
+	fontObj = pygame.font.Font('freesansbold.ttf', s)
 	textSurfaceObj = fontObj.render(str(e), True, g, b)
 	textRectObj = textSurfaceObj.get_rect()
 	textRectObj.center = (x, y)
@@ -57,52 +63,108 @@ counttime = 50
 start = False
 clicked = False
 changec = False
+help = False
+special = False
+listsp = []
+listy = []
+timefire = 200
+coldtime = 0
+lent = 15
 while True:
 	DISPLAYSURF.fill(BLACK)
-	font('PLAY',BLACK,WHITE,375,375)
-	font('COSTUME',BLACK,WHITE,375,425)
+	font('PLAY',BLACK,WHITE,375,375,32)
+	font('COSTUME',BLACK,WHITE,375,425,32)
+	font('HELP',BLACK,WHITE,375,475,32)
 	if clicked == True:
 		if mousex >= 325 and mousex <= 425 and mousey >= 350 and mousey <= 400:
 			start = True
 	if clicked == True:
 		if mousex >= 275 and mousex <= 450 and mousey >= 400 and mousey <= 450:
 			changec = True
+		if mousex >= 325 and mousex <= 450 and mousey >= 425 and mousey <= 525:
+			help = True
+	if help == True:
+		DISPLAYSURF.fill(WHITE)
+		font('LEFT ARROW, RIGHT ARROW: MOVE',BLACK,WHITE,200,15,20)
+		font('UP ARROW: FIRE',BLACK,WHITE,100,60,20)
+		font('SPACE: SPECIAL ATTACK',BLACK, WHITE,140,105,20)
+		font('QUIT',BLACK,WHITE,35,750,32)
+		if clicked == True:
+			if mousex >= 10 and mousex <= 70 and mousey >= 740 and mousey <= 755:
+				help = False
 	if changec == True:
 		DISPLAYSURF.fill(WHITE)
-		font('QUIT',BLACK,WHITE,35,750)
-		font('COSTUME',BLACK,WHITE, 425, 375)
+		font('QUIT',BLACK,WHITE,35,750,32)
+		font('COSTUME',BLACK,WHITE, 425, 375,32)
 		pygame.draw.polygon(DISPLAYSURF, BLACK, ((450,400), (450,425), (475,412)))
 		pygame.draw.polygon(DISPLAYSURF, BLACK, ((425,400), (425,425), (400,412)))
-		font(costume,BLACK, WHITE, 433, 412)
+		font(costume,BLACK, WHITE, 433, 412,32)
 		if clicked == True:
 			if mousex >= 450 and mousex <= 475 and mousey >= 400 and mousey <= 425:
-				if costume + 1 > 2:
+				if costume + 1 > 4:
 					costume = 1
 				else:
 					costume += 1
 				clicked = False
 			if mousex >= 400 and mousex <= 425 and mousey >= 400 and mousey <= 425:
 				if costume - 1 < 1:
-					costume = 2
+					costume = 4
 				else:
 					costume -= 1
 				clicked = False
-			if mousex >= 35 and mousex <= 50 and mousey >= 740 and mousey <= 755:
+			if mousex >= 10 and mousex <= 70 and mousey >= 740 and mousey <= 755:
 				changec = False
 		if costume == 1:
 			tank2(x2,y2)
 		elif costume == 2:
 			tank2c2(x2,y2)
+		elif costume == 3:
+			tank2c3(x2,y2)
+		elif costume == 4:
+			tank2c4(x2,y2)
 	if start == True:
+		print('listsp: ',listsp)
+		print('listy: ',listy)
 		DISPLAYSURF.fill(WHITE)
-		font(life,BLACK,WHITE,15,15)
-		font(life2,BLACK,WHITE,15,755)
-		font('QUIT',BLACK,WHITE,750,400)
-		if mousex >= 750 and mousex <= 765 and mousey >= 390 and mousey <= 415:
+		font('Cold time: '+str(coldtime),BLACK,WHITE,650,75,32)
+		font(life,BLACK,WHITE,15,15,32)
+		font(life2,BLACK,WHITE,15,755,32)
+		font('QUIT',BLACK,WHITE,750,400,32)
+		if mousex >= 730 and mousex <= 775 and mousey >= 390 and mousey <= 415:
 			start = False
+			x = 400
+			y = 0
+			can = True
+			can2 = True
+			x2 = 400
+			y2 = 750
+			bum = False
+			yposition = y + 60
+			yposition2 = 231
+			mousex = 0
+			mousey = 0
+			dir = 'right'
+			bum2 = False
+			dir2 = 'shit'
+			life = 5
+			life2 = 5
+			fie = False
+			counttime2 = 50
+			timecount = random.randint(85,150)
+			xposition = 1
+			show = True
+			count = 10
+			counttime = 50
+			special = False
+			listsp = []
+			listy = []
+			timefire = 200
+			coldtime = 0
+			lent = 15
+
 		if life == 0:
 			counttime -= 1
-			font('You Win!',BLACK, WHITE, 350,375)
+			font('You Win!',BLACK, WHITE, 350,375,32)
 			if counttime == 0:
 				life = 5
 				counttime = 50
@@ -124,7 +186,7 @@ while True:
 			xposition = x + 25
 			bum = True
 		if yposition > 750:
-			DISPLAYSURF.blit(explosion,(xposition,yposition - 100))
+			DISPLAYSURF.blit(explosion,(xposition - 50,yposition - 100))
 		if bum == True:
 			fire(xposition,yposition)
 			yposition += 5
@@ -133,7 +195,7 @@ while True:
 					life2 -= 1
 		if life2 == 0:
 			counttime2 -= 1
-			font('You lose!',BLACK, WHITE,350,375)
+			font('You lose!',BLACK, WHITE,350,375,32)
 			if counttime2 == 0:
 				start = False
 				counttime2 = 50
@@ -149,6 +211,10 @@ while True:
 				tank2(x2,y2)
 			if costume == 2:
 				tank2c2(x2,y2)
+			if costume == 3:
+				tank2c3(x2,y2)
+			if costume == 4:
+				tank2c4(x2,y2)
 		if fie == True:
 			yposition2 = y2 - 50
 			xposition2 = x2 + 50
@@ -175,6 +241,40 @@ while True:
 			can2 = False
 		else:
 			can2 = True
+		if special == True:
+			if timefire != 0:
+				timefire -= 1
+				if lent == 0:
+					lent = 15
+					listsp.append(x2)
+					listy.append(y2)
+				else:
+					lent -= 1
+				for b in range(len(listsp)):
+					if b >= len(listsp):
+						break
+					fire(listsp[b],listy[b])
+					for z in range(len(listy)):
+						listy[z] -= 5
+					for f in range(len(listy)):
+						#print('y: ',y)
+						#print(listy)
+						if f >= len(listy):
+							break
+						if listy[f] == 5:
+							DISPLAYSURF.blit(explosion,(listsp[f],listy[f]))
+							if listsp[f] > x - 90 and listsp[f] < x + 90:
+								life -= 1
+							listsp.remove(listsp[f])
+							listy.remove(listy[f])
+			else:
+				special = False
+				coldtime = 1000
+				timefire = 200
+				listsp = []
+				listy = []
+	if coldtime != 0:
+		coldtime -= 1
 	for event in pygame.event.get():
 		if event.type == MOUSEBUTTONUP:
 			clicked = True
@@ -185,6 +285,10 @@ while True:
 			pygame.quit()
 			sys.exit()
 		elif event.type == KEYDOWN:
+			#space
+			if event.key == 32:
+				if coldtime <= 0:
+					special = True
 			if event.key == K_LEFT:
 				if can == True:
 					dir2 = 'left'
