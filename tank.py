@@ -70,6 +70,10 @@ listy = []
 timefire = 200
 coldtime = 0
 lent = 15
+listxc = []
+listyc = []
+lend = 0
+pressed = False
 while True:
 	DISPLAYSURF.fill(BLACK)
 	font('PLAY',BLACK,WHITE,375,375,32)
@@ -123,8 +127,6 @@ while True:
 		elif costume == 4:
 			tank2c4(x2,y2)
 	if start == True:
-		print('listsp: ',listsp)
-		print('listy: ',listy)
 		DISPLAYSURF.fill(WHITE)
 		font('Cold time: '+str(coldtime),BLACK,WHITE,650,75,32)
 		font(life,BLACK,WHITE,15,15,32)
@@ -161,8 +163,10 @@ while True:
 			timefire = 200
 			coldtime = 0
 			lent = 15
-
-		if life == 0:
+			listxc = []
+			listyc = []
+			lend = 60
+		if life <= 0:
 			counttime -= 1
 			font('You Win!',BLACK, WHITE, 350,375,32)
 			if counttime == 0:
@@ -220,11 +224,28 @@ while True:
 			xposition2 = x2 + 50
 			bum2 = True
 		if bum2 == True:
-			fire(xposition2,yposition2)
-			yposition2 -= 5
-			if yposition2 == 5:
-				if xposition2 > x - 90 and xposition2 < x + 90:
-					life -= 1
+			if pressed == True:	
+				if lend == 0:
+					listxc.append(x2)
+					listyc.append(y2)
+					pressed = False
+					lend = 60
+			if listxc != []:
+				for b in range(len(listxc)):
+					if b >= len(listxc):
+						break
+					fire(listxc[b],listyc[b])
+					for z in range(len(listyc)):
+						listyc[z] -= 5
+					for f in range(len(listyc)):
+						if f >= len(listyc):
+							break
+						if listyc[f] == 5:
+							DISPLAYSURF.blit(explosion,(listxc[f],listyc[f]))
+							if listxc[f] > x - 90 and listxc[f] < x + 90:
+								life -= 1
+							listxc.remove(listxc[f])
+							listyc.remove(listyc[f])
 		if yposition2 < 1:
 			if show == True:
 				count -= 1
@@ -257,8 +278,6 @@ while True:
 					for z in range(len(listy)):
 						listy[z] -= 5
 					for f in range(len(listy)):
-						#print('y: ',y)
-						#print(listy)
 						if f >= len(listy):
 							break
 						if listy[f] == 5:
@@ -275,6 +294,8 @@ while True:
 				listy = []
 	if coldtime != 0:
 		coldtime -= 1
+	if lend != 0:
+		lend -= 1
 	for event in pygame.event.get():
 		if event.type == MOUSEBUTTONUP:
 			clicked = True
@@ -299,12 +320,13 @@ while True:
 					dir2 = 'right'
 				else:
 					dir2 = 'shit'
-			if bum2 == False:
-				if event.key == K_UP:
-					fie = True
-					show = True
-				else:
-					fie = False
+			if event.key == K_UP:
+				fie = True
+				show = True
+				pressed = True
+			else:
+				fie = False
+				pressed = False
 		elif event.type != KEYDOWN:
 			dir2 = 'shit'
 			fie = False
