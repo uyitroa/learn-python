@@ -58,6 +58,140 @@ def font(e,g,b,x,y,s):
 	textRectObj = textSurfaceObj.get_rect()
 	textRectObj.center = (x, y)
 	DISPLAYSURF.blit(textSurfaceObj,textRectObj)
+def helpme():
+	global help
+	DISPLAYSURF.fill(WHITE)
+	font('LEFT ARROW, RIGHT ARROW: MOVE',BLACK,WHITE,200,15,20)
+	font('UP ARROW: FIRE',BLACK,WHITE,100,60,20)
+	font('SPACE: SPECIAL ATTACK',BLACK, WHITE,140,105,20)
+	font('QUIT',BLACK,WHITE,35,750,32)
+	if clicked == True:
+		if mousex >= 10 and mousex <= 70 and mousey >= 740 and mousey <= 755:
+			help = False
+
+def cos():
+	global changec,clicked,costume
+	DISPLAYSURF.fill(WHITE)
+	font('QUIT',BLACK,WHITE,35,750,32)
+	font('COSTUME',BLACK,WHITE, 425, 375,32))
+	pygame.draw.polygon(DISPLAYSURF, BLACK, ((450,400), (450,425), (475,412)))
+	pygame.draw.polygon(DISPLAYSURF, BLACK, ((425,400), (425,425), (400,412)))
+	font(costume,BLACK, WHITE, 433, 412,32)
+	if clicked == True:
+		if mousex >= 450 and mousex <= 475 and mousey >= 400 and mousey <= 425:
+			if costume + 1 > 4:
+				costume = 1
+			else:
+				costume += 1
+			clicked = False
+		if mousex >= 400 and mousex <= 425 and mousey >= 400 and mousey <= 425:
+			if costume - 1 < 1:
+				costume = 4
+			else:
+				costume -= 1
+			clicked = False
+		if mousex >= 10 and mousex <= 70 and mousey >= 740 and mousey <= 755:
+			changec = False
+	if costume == 1:
+		tank2(x2,y2)
+	elif costume == 2:
+		tank2c2(x2,y2)
+	elif costume == 3:
+		tank2c3(x2,y2)
+	elif costume == 4:
+		tank2c4(x2,y2)
+def specialattack():
+		global lent,timefire,coldtime,special,listsp,listy,life
+		if timefire != 0:
+			timefire -= 1
+			if lent == 0:
+				lent = 15
+				listsp.append(x2)
+				listy.append(y2)
+			else:
+				lent -= 1
+			for b in range(len(listsp)):
+				if b >= len(listsp):
+					break
+				fire(listsp[b],listy[b])
+				for z in range(len(listy)):
+					listy[z] -= 5
+				for f in range(len(listy)):
+					if f >= len(listy):
+						break
+					if listy[f] == 5:
+						DISPLAYSURF.blit(explosion,(listsp[f],listy[f]))
+						if listsp[f] >= x and listsp[f] < x + 90:
+							life -= 1
+						listsp.remove(listsp[f])
+						listy.remove(listy[f])
+		else:
+			special = False
+			coldtime = 1000
+			timefire = 200
+			listsp = []
+			listy = []
+def ban():
+	global pressed, lend, listxc,listyc,life
+	if pressed == True:	
+		if lend == 0:
+			listxc.append(x2)
+			listyc.append(y2)
+			pressed = False
+			lend = 60
+	if listxc != []:
+		for b in range(len(listxc)):
+			if b >= len(listxc):
+				break
+			fire(listxc[b],listyc[b])
+			for z in range(len(listyc)):
+				listyc[z] -= 5
+			for f in range(len(listyc)):
+				if f >= len(listyc):
+					break
+				if listyc[f] == 5:
+					DISPLAYSURF.blit(explosion,(listxc[f],listyc[f]))
+					if listxc[f] >= x and listxc[f] < x + 90:
+						life -= 1
+					listxc.remove(listxc[f])
+					listyc.remove(listyc[f])
+
+def reset():
+	global start, x, y, ca, can2, x2, y2, bum, yposition, xposition, mousex, mousey, dir, bum2, dir2, life, life2, fie, counttime, timecount, xposition, show, count, counttime2, special, listsp
+	global listy, timefire, coldtime,lent, listxc, listyc, lend
+	start = False
+	x = 400
+	y = 0
+	can = True
+	can2 = True
+	x2 = 400
+	y2 = 750
+	bum = False
+	yposition = y + 60
+	yposition2 = 231
+	mousex = 0
+	mousey = 0	
+	dir = 'right'
+	bum2 = False
+	dir2 = 'shit'
+	life = 5
+	life2 = 5
+	fie = False
+	counttime2 = 50
+	timecount = random.randint(85,150)
+	xposition = 1
+	show = True
+	count = 10
+	counttime = 50
+	special = False
+	listsp = []
+	listy = []
+	timefire = 200
+	coldtime = 0
+	lent = 15
+	listxc = []
+	listyc = []
+	lend = 60
 explosion = pygame.image.load('ex.png')
 counttime = 50
 start = False
@@ -88,44 +222,9 @@ while True:
 		if mousex >= 325 and mousex <= 450 and mousey >= 425 and mousey <= 525:
 			help = True
 	if help == True:
-		DISPLAYSURF.fill(WHITE)
-		font('LEFT ARROW, RIGHT ARROW: MOVE',BLACK,WHITE,200,15,20)
-		font('UP ARROW: FIRE',BLACK,WHITE,100,60,20)
-		font('SPACE: SPECIAL ATTACK',BLACK, WHITE,140,105,20)
-		font('QUIT',BLACK,WHITE,35,750,32)
-		if clicked == True:
-			if mousex >= 10 and mousex <= 70 and mousey >= 740 and mousey <= 755:
-				help = False
+		helpme()
 	if changec == True:
-		DISPLAYSURF.fill(WHITE)
-		font('QUIT',BLACK,WHITE,35,750,32)
-		font('COSTUME',BLACK,WHITE, 425, 375,32)
-		pygame.draw.polygon(DISPLAYSURF, BLACK, ((450,400), (450,425), (475,412)))
-		pygame.draw.polygon(DISPLAYSURF, BLACK, ((425,400), (425,425), (400,412)))
-		font(costume,BLACK, WHITE, 433, 412,32)
-		if clicked == True:
-			if mousex >= 450 and mousex <= 475 and mousey >= 400 and mousey <= 425:
-				if costume + 1 > 4:
-					costume = 1
-				else:
-					costume += 1
-				clicked = False
-			if mousex >= 400 and mousex <= 425 and mousey >= 400 and mousey <= 425:
-				if costume - 1 < 1:
-					costume = 4
-				else:
-					costume -= 1
-				clicked = False
-			if mousex >= 10 and mousex <= 70 and mousey >= 740 and mousey <= 755:
-				changec = False
-		if costume == 1:
-			tank2(x2,y2)
-		elif costume == 2:
-			tank2c2(x2,y2)
-		elif costume == 3:
-			tank2c3(x2,y2)
-		elif costume == 4:
-			tank2c4(x2,y2)
+		cos()
 	if start == True:
 		DISPLAYSURF.fill(WHITE)
 		font('Cold time: '+str(coldtime),BLACK,WHITE,650,75,32)
@@ -133,39 +232,7 @@ while True:
 		font(life2,BLACK,WHITE,15,755,32)
 		font('QUIT',BLACK,WHITE,750,400,32)
 		if mousex >= 730 and mousex <= 775 and mousey >= 390 and mousey <= 415:
-			start = False
-			x = 400
-			y = 0
-			can = True
-			can2 = True
-			x2 = 400
-			y2 = 750
-			bum = False
-			yposition = y + 60
-			yposition2 = 231
-			mousex = 0
-			mousey = 0
-			dir = 'right'
-			bum2 = False
-			dir2 = 'shit'
-			life = 5
-			life2 = 5
-			fie = False
-			counttime2 = 50
-			timecount = random.randint(85,150)
-			xposition = 1
-			show = True
-			count = 10
-			counttime = 50
-			special = False
-			listsp = []
-			listy = []
-			timefire = 200
-			coldtime = 0
-			lent = 15
-			listxc = []
-			listyc = []
-			lend = 60
+			reset()
 		if life <= 0:
 			counttime -= 1
 			font('You Win!',BLACK, WHITE, 350,375,32)
@@ -195,7 +262,7 @@ while True:
 			fire(xposition,yposition)
 			yposition += 5
 			if yposition == 750:
-				if xposition > x2 - 90 and xposition < x2 + 90:
+				if xposition >= x2 and xposition < x2 + 90:
 					life2 -= 1
 		if life2 == 0:
 			counttime2 -= 1
@@ -224,28 +291,7 @@ while True:
 			xposition2 = x2 + 50
 			bum2 = True
 		if bum2 == True:
-			if pressed == True:	
-				if lend == 0:
-					listxc.append(x2)
-					listyc.append(y2)
-					pressed = False
-					lend = 60
-			if listxc != []:
-				for b in range(len(listxc)):
-					if b >= len(listxc):
-						break
-					fire(listxc[b],listyc[b])
-					for z in range(len(listyc)):
-						listyc[z] -= 5
-					for f in range(len(listyc)):
-						if f >= len(listyc):
-							break
-						if listyc[f] == 5:
-							DISPLAYSURF.blit(explosion,(listxc[f],listyc[f]))
-							if listxc[f] > x - 90 and listxc[f] < x + 90:
-								life -= 1
-							listxc.remove(listxc[f])
-							listyc.remove(listyc[f])
+			ban()
 		if yposition2 < 1:
 			if show == True:
 				count -= 1
@@ -263,35 +309,7 @@ while True:
 		else:
 			can2 = True
 		if special == True:
-			if timefire != 0:
-				timefire -= 1
-				if lent == 0:
-					lent = 15
-					listsp.append(x2)
-					listy.append(y2)
-				else:
-					lent -= 1
-				for b in range(len(listsp)):
-					if b >= len(listsp):
-						break
-					fire(listsp[b],listy[b])
-					for z in range(len(listy)):
-						listy[z] -= 5
-					for f in range(len(listy)):
-						if f >= len(listy):
-							break
-						if listy[f] == 5:
-							DISPLAYSURF.blit(explosion,(listsp[f],listy[f]))
-							if listsp[f] > x - 90 and listsp[f] < x + 90:
-								life -= 1
-							listsp.remove(listsp[f])
-							listy.remove(listy[f])
-			else:
-				special = False
-				coldtime = 1000
-				timefire = 200
-				listsp = []
-				listy = []
+			specialattack()
 	if coldtime != 0:
 		coldtime -= 1
 	if lend != 0:
