@@ -221,6 +221,8 @@ def heavy():
 		if x2 >= xh and x2 <= xh + 100:
 			life2 -= 2
 	for b in range(len(listxc)):
+		if b >= len(listxc):
+			break
 		if listyc[b] <= yh and listyc[b] >= yh - 50:
 			if listxc[b] >= xh and listxc[b] <= xh + 100:
 				counth = 1000
@@ -228,6 +230,8 @@ def heavy():
 				listxc.remove(listxc[b])
 				listyc.remove(listyc[b])
 	for c in range(len(listsp)):
+		if c >= len(listsp):
+			break
 		if listy[c] <= yh and listy[c] >= yh - 50:
 			if listsp[c] >= xh and listsp[c] <= xh + 100:
 				counth = 1000
@@ -579,7 +583,7 @@ while True:
 			just = True
 	if counth == 0:	
 		if just == True:
-			xh = x + 25
+			xh = x
 			yh = y
 			just = False
 		heavy()
