@@ -54,6 +54,7 @@ dired = 'left'
 touch = False
 show2 = True
 countw = 0
+quit = False
 counth = 100
 weapon = False
 def tankex(x,y):
@@ -93,6 +94,9 @@ def perban():
 			life2 -= 1
 def spwea(x,y):
 	pygame.draw.circle(DISPLAYSURF, BLACK, (x,y), 50,50)
+def barcold(x,y,s):
+	pygame.draw.rect(DISPLAYSURF, BLACK, (x, y, 100, 30))
+	pygame.draw.rect(DISPLAYSURF, WHITE, (x, y, s, 50))
 def permove():
 	global dired, x4, touch
 	if dired == 'left':
@@ -488,6 +492,8 @@ listyc = []
 lend = 0
 pressed = False
 level = 1
+modest = False
+modec = False
 while True:
 	DISPLAYSURF.fill(BLACK)
 	font('PLAY',BLACK,WHITE,375,375,32)
@@ -501,14 +507,28 @@ while True:
 			changec = True
 		if mousex >= 325 and mousex <= 450 and mousey >= 425 and mousey <= 525:
 			help = True
+	if mousex >= 325 and mousex <= 425 and mousey >= 350 and mousey <= 400:
+		modest = True
+	else:
+		modest = False
+	if modest == True:
+		font('PLAY',BLACK,WHITE,375,375,45)
+	if mousex >= 275 and mousex <= 450 and mousey >= 400 and mousey <= 450:
+		modec = True
+	else:
+		modec = False
+	if modec == True:
+		font('CUSTOM',BLACK,WHITE,375,425,45)
 	if help == True:
 		helpme()
 	if changec == True:
 		cos()
 	if start == True:
 		DISPLAYSURF.fill(WHITE)
-		font('Cold time: '+str(coldtime),BLACK,WHITE,650,75,32)
-		font('Time Weapon: '+str(countw),BLACK, WHITE,630, 100,32)
+		cold = (1000 - coldtime) / 10
+		barcold(645,75,cold)
+		w = (1000 - countw) / 10
+		barcold(645,115,w)
 		font(life,BLACK,WHITE,15,15,32)
 		font(life2,BLACK,WHITE,15,755,32)
 		font('QUIT',BLACK,WHITE,750,400,32)
@@ -521,7 +541,8 @@ while True:
 			permove()
 			perfire()
 		if mousex >= 730 and mousex <= 775 and mousey >= 390 and mousey <= 415:
-			reset()
+			if click == True:
+				reset()
 		if life <= 0:
 			win()
 			tankex(x,y)
@@ -588,6 +609,8 @@ while True:
 			just = False
 		heavy()
 	for event in pygame.event.get():
+		if event.type == 4:
+			mousex, mousey = event.pos
 		if event.type == MOUSEBUTTONUP:
 			clicked = True
 			mousex, mousey = event.pos
@@ -597,6 +620,12 @@ while True:
 			pygame.quit()
 			sys.exit()
 		elif event.type == KEYDOWN:
+			if event.key == 310:
+				quit = True
+			if event.key == 113:
+				if quit == True:
+					pygame.quit()
+					sys.exit()
 			#space
 			if event.key == 32:
 				if coldtime <= 0:
