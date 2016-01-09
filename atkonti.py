@@ -9,7 +9,8 @@ YELLOW = (255, 255, 0)
 DISPLAYSURF = pygame.display.set_mode((800,800))
 pygame.display.set_caption('Attack on titan')
 distance = [500,1300,1900,2500,3500]
-distancett = [800,1600,2100,3000]
+distancett = [800]
+#1600,2100,3000
 ttt = False
 n = 'ok'
 pygame.init()
@@ -186,17 +187,17 @@ while True:
 						touch = True
 					else:
 						touch = False
-		#for x in range(len(distancett)):
-		#	if dirt[x] == 'right':
-		#		distancett[x] += 2
-		#		if x == 0:
-		#			if distancett[x] >= 1200:
-		#				dirt[x] = 'left'
-		#	elif dirt[x] == 'left':
-		#		distancett[x] -= 2
-		#		if x == 0:
-		#			if distancett[x] <= 600:
-		#				dirt[x] = 'right'
+		for s in range(len(distancett)):
+			if dirt[s] == 'right':
+				distancett[s] += 2
+				if s == 0:
+					if distancett[s] >= 1200:
+						dirt[s] = 'left'
+			elif dirt[s] == 'left':
+				distancett[s] -= 2
+				if s == 0:
+					if distancett[s] <= 600:
+						dirt[s] = 'right'
 		if xeren < 200:
 			if distance[0] != 500:
 				xeren += 5
@@ -240,13 +241,13 @@ while True:
 			if xposi - xeren < 600:
 				if yposi - yeren > -600:
 					if touchWall(xposi,yposi) == True:
-						#if ttt != True:
-						wipe(xeren + 30,yeren + 35,xposi,yposi)
-						#if ttt == True:
-						#	if xposi > xeren:
-						#		wipe(xeren + 30, yeren + 35, distancett[n] + 30,yposi )
-						#	else:
-						#		wipe(xeren + 30, yeren + 35, distancett[n] + 190, yposi)
+						if ttt != True:
+							wipe(xeren + 30,yeren + 35,xposi,yposi)
+						if ttt == True:
+							if xposi > xeren:
+								wipe(xeren + 30, yeren + 35, distancett[n] + 30,yposi )
+							else:
+								wipe(xeren + 30, yeren + 35, distancett[n] + 190, yposi)
 			#else:
 			#	use = False
 			#	fly = False
