@@ -9,23 +9,27 @@ YELLOW = (255, 255, 0)
 DISPLAYSURF = pygame.display.set_mode((800,800))
 pygame.display.set_caption('Attack on titan')
 distance = [500,1300,1900,2500,3500]
-distancett = [800]
+distancett = [800,1600,2100]
+anotherdis = [800,1600,2100]
+distance2 = [800]
 #1600,2100,3000
 ttt = False
 n = 'ok'
+touchbyr = False
 pygame.init()
 def base():
 	pygame.draw.rect(DISPLAYSURF, BLACK, (0,750, 800 , 800))
 def wipe(x,y,x2,y2):
 	pygame.draw.line(DISPLAYSURF, BLACK, (x,y),(x2,y2),4)
 def touchWall(xr,yr):
-	global distance, ttt, n, distancett
+	global distance, ttt, n, distancett,distance2,touchbyr
 	tach = False
 	for x in range(len(distance)):
 		if distance[x] < 800 and distance[x] > 0:
 			if yr > 450:
 				if xr >= distance[x] - 5 and xr <= distance[x] + 105:
 					tach = True
+					touchbyr = False
 					break
 				else:
 					tach = False
@@ -38,10 +42,25 @@ def touchWall(xr,yr):
 					tach = True
 					ttt = True
 					n = b
+					touchbyr = False
 					break
 				else:
 					tach = False
 					ttt = False
+	for c in range(len(distance2)):
+		print('yr: ',yr)
+		print('distance2: ',distance2[c])
+		print('xr: ',xr)
+		if distance2[c] < 900 and distance2[c] > 0:
+			if yr < 500:
+				if tach == True:
+					break
+				if xr >= distance2[c] - 50 and xr <= distance2[c] + 50:
+					tach = True
+					touchbyr = True
+					break
+				else:
+					tach = False
 	return tach
 def font(e,g,b,x,y,s):
 	fontObj = pygame.font.Font('freesansbold.ttf', s)
@@ -92,12 +111,17 @@ attack = False
 kill = False
 timewin = 30
 d = 's'
-dirt = ['left']
-titanrest = 4
+dirt = ['left','right','left']
+titanrest = len(distancett)
 start = False
 help = False
 modest = False
 win = 30
+timeatk = 20
+coldatk = 100
+numberti = ''
+atktitan = False
+costitan = 1
 while True:
 	DISPLAYSURF.fill(BLACK)
 	font('PLAY',BLACK,WHITE,375,375,32)
@@ -123,6 +147,10 @@ while True:
 		base()
 		font('TITAN: '+str(titanrest),BLACK,WHITE,700,50,32)
 		#font(str(xposi >= distance[0] - 5 or xposi <= distance[0] + 105),BLACK,WHITE,100,375,32)
+		for f in range(len(distancett)):
+			if xeren <= distancett[f]:
+				numberti = f
+				atktitan = True
 		if xm > xeren:
 			perso = eren
 			sao = sword
@@ -148,6 +176,17 @@ while True:
 							kill = True
 							d = x
 							break
+		'''if atktitan == True:
+			if timeatk != 0:
+				timeatk -= 1
+			else:
+				if costitan == 1:
+					costitan = 2
+					timeatk = 20
+				else:
+					costitan = 1
+					timeatk = 20
+					atktitan = False'''
 		if kill == True:
 			if timewin != 0:
 				font('Killed',WHITE,BLACK,375,100,32)
@@ -166,15 +205,24 @@ while True:
 				distancett = [distance[0] + 300,distance[1] + 300,distance[2] + 200,distance[3] + 500]
 				titanrest = 4
 		for x in range(len(distancett)):
-			if distancett[x] < 800 and distancett[x] >-10:
+			if distancett[x] < 800 and distancett[x] >-200:
+				#if atktitan != True:
 				DISPLAYSURF.blit(titan,(distancett[x],325))
+				'''else:
+					if numberti == x:
+						if costitan == 1:
+							DISPLAYSURF.blit(titanatk,(distancett[x],325))
+							distancett[x] -= 1
+						else:
+							DISPLAYSURF.blit(titanatk2,(distancett[x],325))
+							distancett[x] -= 1'''
 				if yeren > 350:
 					if xeren < distancett[x] + 200 and xeren >= distancett[x] - 25:
 						xeren -= 5
 					elif xeren < distancett[x] + 225 and xeren >= distancett[x] + 90:
 						xeren += 5
 		for x in range(len(distance)):
-			if distance[x] < 800 and distance[x] > -10:
+			if distance[x] < 800 and distance[x] > -100:
 				pygame.draw.rect(DISPLAYSURF, BLACK, (distance[x],450,100, 800))
 				if yeren > 300:
 					if xeren < distance[x] + 75 and xeren >= distance[x] - 50:
@@ -187,17 +235,34 @@ while True:
 						touch = True
 					else:
 						touch = False
+		for x in range(len(distance2)):
+			if distance2[x] < 900 and distance2[x] > -100:
+				pygame.draw.rect(DISPLAYSURF, BLACK, (distance2[x],50,50, 75))
 		for s in range(len(distancett)):
 			if dirt[s] == 'right':
 				distancett[s] += 2
+				anotherdis[s] += 2
 				if s == 0:
-					if distancett[s] >= 1200:
+					if anotherdis[s] >= 1050:
+						dirt[s] = 'left'
+				if s == 1:
+					if anotherdis[s] >= 1650:
+						dirt[s]  = 'left'
+				if s == 2:
+					if anotherdis[s] >= 2200:
 						dirt[s] = 'left'
 			elif dirt[s] == 'left':
 				distancett[s] -= 2
+				anotherdis[s] -= 2
 				if s == 0:
-					if distancett[s] <= 600:
+					if anotherdis[s] <= 600:
 						dirt[s] = 'right'
+				if s == 1:
+					if anotherdis[s] <= 1600:
+						dirt[s] = 'right'
+				if s == 2:
+					if anotherdis[s] <= 2000:
+						dirt[s] = 'right' 
 		if xeren < 200:
 			if distance[0] != 500:
 				xeren += 5
@@ -205,12 +270,16 @@ while True:
 					distance[x] += 5
 				for x in range(len(distancett)):
 					distancett[x] += 5
+				for x in range(len(distance2)):
+					distance2[x] += 5
 		if xeren > 600:
 			xeren -= 5
 			for x in range(len(distance)):
 				distance[x] -= 5
 			for x in range(len(distancett)):
 				distancett[x] -= 5
+			for x in range(len(distance2)):
+				distance2[x] -= 5
 		if direren == 'left':
 			perso = eren2
 			sao = sword2
@@ -233,7 +302,7 @@ while True:
 			if yeren > 680:
 				yeren = 680
 				dowing = False
-			if yeren >= 383 and yeren < 495:
+			if yeren >= 385 and yeren < 495:
 				if touch == True:
 					yeren = 390
 					dowing = False
@@ -248,21 +317,22 @@ while True:
 								wipe(xeren + 30, yeren + 35, distancett[n] + 30,yposi )
 							else:
 								wipe(xeren + 30, yeren + 35, distancett[n] + 190, yposi)
-			#else:
-			#	use = False
-			#	fly = False
-			#	c = 40
-			#	dirren = 'down'
 						if fly == True:
 							if c != 40:
 								if xm > xeren:
 									if touch != True:
 										xeren += xposi / 40
-										yeren -= (yposi / 40) + 2.25
+										if touchbyr != True:
+											yeren -= (yposi / 40) 
+										else:
+											yeren -= (yposi / 40) + 15
 								else:
 									if touch != True:
 										xeren -= xposi / 40
-										yeren -= (yposi / 40) + 2.25
+										if touchbyr != True:
+											yeren -= (yposi / 40)
+										else:
+											yeren -= (yposi / 40) + 15
 							c += 1
 							if c == 40:
 								xeren = int(xeren)
@@ -307,7 +377,10 @@ while True:
 			if event.key == K_w:
 				if dirren != 'jump':
 					if dowing == False:
-						dirren = 'jump'
+						if use != True:
+							dirren = 'jump'
+						else:
+							dirren = 'down'
 			if event.key == K_q:
 				use = True
 				if just == True:

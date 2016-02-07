@@ -1,0 +1,2 @@
+import os
+os.system("afplay "+"/Users/NguyenVietHung/learn-python/recording1.wav")

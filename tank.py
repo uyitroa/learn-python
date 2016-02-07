@@ -1,14 +1,25 @@
-import pygame,sys,os,string
+import pygame,sys,os,string,hotro
 from pygame import *
-import time
-import random
 # account,level,unlock,exp,expmax
-account = open("info.doc", "r")
+BLACK = (0, 0, 0)
+BLUE = (0, 0, 255)
+RED = (255, 0, 0)
+WHITE = (255, 255, 255)
+GREEN = (0, 128, 0)
+YELLOW = (255, 255, 0)
+DISPLAYSURF = pygame.display.set_mode((800,800))
+DISPLAYSURF.fill(BLACK)
+account = open("info.doc","a+")
+account.seek(0)
+pygame.draw.rect(DISPLAYSURF, WHITE, (375, 600, 10, 50))
 accoun = account.read()
+#print(accoun)
 na = str(accoun).split(':')
+#print(na)
 info = []
 name = []
 rest = []
+high = []
 for s in range(len(na)):
 	if s % 2 == 0:
 		name.append(na[s])
@@ -18,15 +29,15 @@ na = str(accoun).split(';')
 for s in range(len(na)):
 	if s != 0:
 		info.append(na[s])
+	if s % 8 == 7:
+		print(na[s])
+		high.append(na[s])
+print(name)
+print(info)
+pygame.draw.rect(DISPLAYSURF, WHITE, (375, 600, 15, 50))
 pygame.init()
-BLACK = (0, 0, 0)
-BLUE = (0, 0, 255)
-RED = (255, 0, 0)
-WHITE = (255, 255, 255)
-GREEN = (0, 128, 0)
-YELLOW = (255, 255, 0)
-DISPLAYSURF = pygame.display.set_mode((800,800))
 pygame.display.set_caption('Hello World!')
+pygame.draw.rect(DISPLAYSURF, WHITE, (375, 600, 20, 50))
 x = 350
 y = 0
 can = True
@@ -40,9 +51,12 @@ mousex = 0
 mousey = 0
 dir = 'right'
 bum2 = False
+pygame.draw.rect(DISPLAYSURF, WHITE, (375, 600, 22, 50))
 dir2 = 'shit'
-life = 5
-life2 = 5
+life = 20
+life2 = 6
+import time
+import random
 fie = False
 counttime2 = 50
 timecount = random.randint(85,150)
@@ -51,6 +65,7 @@ show = True
 count = 10
 costume = 1
 countair = random.randint(80,150)
+pygame.draw.rect(DISPLAYSURF, WHITE, (375, 600, 25, 50))
 ypo = -1
 xpo = -1
 y3 = 350
@@ -69,6 +84,7 @@ where = random.randint(1,2)
 dired = 'left'
 touch = False
 show2 = True
+pygame.draw.rect(DISPLAYSURF, WHITE, (375, 600, 27, 50))
 countw = 0
 modeh = False
 quit = False
@@ -76,12 +92,14 @@ counth = 100
 weapon = False
 unlocked = [1]
 locked = False
+unlocked2 = False
 def tankex(x,y):
 	pygame.draw.rect(DISPLAYSURF, BLACK, (x,y, 50 , 50))
 	pygame.draw.rect(DISPLAYSURF, BLACK, (x+60,y, 50 , 50))
 def tank(x,y):
 	pygame.draw.rect(DISPLAYSURF, BLACK, (x, y, 100, 50))
 	pygame.draw.rect(DISPLAYSURF, BLACK, (x+25,50+y, 50, 25))
+pygame.draw.rect(DISPLAYSURF, WHITE, (375, 600, 30, 50))
 def tankc2(x,y):
 	pygame.draw.rect(DISPLAYSURF, BLACK, (x, y, 100, 50))
 	pygame.draw.rect(DISPLAYSURF, BLACK, (x,y+50,30,25))
@@ -99,6 +117,13 @@ def tank2c3(x,y):
 def tank2c4(x,y):
 	pygame.draw.polygon(DISPLAYSURF, BLACK, ((x,y+50),(x+100,y+50),(x+50,y),(x+35,y)))
 	pygame.draw.rect(DISPLAYSURF, BLACK, (x+35,y - 25, 15,50))
+def tank2c5(x,y):
+	pygame.draw.rect(DISPLAYSURF, BLACK, (x, y, 100, 50))
+	pygame.draw.rect(DISPLAYSURF, BLACK, (x,y-50,30,50))
+	pygame.draw.rect(DISPLAYSURF, BLACK, (x+70,y-50,30,50))
+def tank2c6(x,y):
+	pygame.draw.rect(DISPLAYSURF, BLACK, (x, y, 125, 100))
+	pygame.draw.rect(DISPLAYSURF, BLACK, (x + 13, y - 25, 25, 50))
 def aircraft(x,y):
 	pygame.draw.rect(DISPLAYSURF, BLACK, (x, y, 100, 50))
 def per(x,y):
@@ -204,24 +229,37 @@ def helpme():
 			help = False
 
 locked = False
+pygame.draw.rect(DISPLAYSURF, WHITE, (375, 600, 40, 50))
+def shortBubbleSort(alist):
+	exchanges = True
+	passnum = len(alist)-1
+	while passnum > 0 and exchanges:
+		exchanges = False
+		for i in range(passnum):
+			if alist[i]>alist[i+1]:
+				exchanges = True
+				temp = alist[i]
+				alist[i] = alist[i+1]
+				alist[i+1] = temp
+			passnum = passnum-1
 def cos():
-	global changec,clicked,costume,locked
+	global changec,clicked,costume,locked,unlocked,money,unlocked2,life2,timefire
 	DISPLAYSURF.fill(WHITE)
-	font('QUIT',BLACK,WHITE,35,750,32)
+	font('BACK',BLACK,WHITE,35,750,32)
 	font('CUSTOM',BLACK,WHITE, 425, 375,32)
 	pygame.draw.polygon(DISPLAYSURF, BLACK, ((450,400), (450,425), (475,412)))
 	pygame.draw.polygon(DISPLAYSURF, BLACK, ((425,400), (425,425), (400,412)))
 	font(costume,BLACK, WHITE, 433, 412,32)
 	if clicked == True:
 		if mousex >= 450 and mousex <= 475 and mousey >= 400 and mousey <= 425:
-			if costume + 1 > 4:
+			if costume + 1 > 6:
 				costume = 1
 			else:
 				costume += 1
 			clicked = False
 		if mousex >= 400 and mousex <= 425 and mousey >= 400 and mousey <= 425:
 			if costume - 1 < 1:
-				costume = 4
+				costume = 6
 			else:
 				costume -= 1
 			clicked = False
@@ -233,31 +271,64 @@ def cos():
 		locked = False
 	elif costume == 2:
 		tank2c2(x2,y2)
-		for s in range(len(unlocked)):
-			if perlevel >= 2:
-				locked = False
-				break
-			else:
-				font('Locked! Level 2 will unlock',BLACK,WHITE,x2,y2 - 50,32)
-				locked = True
+		if perlevel >= 2:
+			locked = False
+		else:
+			font('Locked! Level 2 will unlock',BLACK,WHITE,x2,y2 - 50,32)
+			locked = True
 	elif costume == 3:
 		tank2c3(x2,y2)
-		for s in range(len(unlocked)):
-			if perlevel >= 3:
-				locked = False
-				break
-			else:
-				font('Locked! Level 3 will unlock',BLACK,WHITE,x2,y2 - 100,32)
-				locked = True
+		if perlevel >= 3:
+			locked = False
+		else:
+			font('Locked! Level 3 will unlock',BLACK,WHITE,x2,y2 - 100,32)
+			locked = True
 	elif costume == 4:
 		tank2c4(x2,y2)
-		for s in range(len(unlocked)):
-			if perlevel >= 4:
-				locked = False
-				break
-			else:
-				font('Locked! Level 4 will unlock',BLACK,WHITE,x2,y2 - 50,32)
-				locked = True
+		if perlevel >= 4:
+			locked = False
+		else:
+			font('Locked! Level 4 will unlock',BLACK,WHITE,x2,y2 - 50,32)
+			locked = True
+	elif costume == 5:
+		tank2c5(x2,y2)
+		effect()
+		if unlocked == 'True':
+			locked = False
+		else:
+			font('Locked! Buy: 3000',BLACK,WHITE,x2,y2 - 50,32)
+			font('BUY',WHITE,BLACK,375,150,32)
+			locked = True
+			if mousex >= 300 and mousex <= 450 and mousey >= 100 and mousey <= 200:
+				font('BUY',WHITE,BLACK,375,150,45)
+				if clicked == True:
+					if money >= 3000:
+						money -= 3000
+						unlocked = 'True'
+						locked = False
+						clicked = False
+	elif costume == 6:
+		tank2c6(x2,y2)
+		effect()
+		if unlocked2 == 'True':
+			locked = False
+			life2 = 10
+			timefire = 1000
+		else:
+			font('Locked! Buy: 4000',BLACK,WHITE,x2,y2 - 50,32)
+			font('BUY',WHITE,BLACK,375,150,32)
+			locked = True
+			if mousex >= 300 and mousex <= 450 and mousey >= 100 and mousey <= 200:
+				font('BUY',WHITE,BLACK,375,150,45)
+				if clicked == True:
+					if money >= 4000:
+						money -= 4000
+						unlocked2 = 'True'
+						locked = False
+						clicked = False
+						life2 = 10
+	if costume != 6:
+		life2 = 6
 def heavy():
 	global xh, yh, x2, life2,listxc, listyc,counth,just, listsp, listy
 	recta(xh,yh)
@@ -286,7 +357,7 @@ def heavy():
 				listsp.remove(listsp[c])
 				listy.remove(listy[c])
 def specialattack():
-		global lent,timefire,coldtime,special,listsp,listy,life, show2, x4
+		global lent,timefire,coldtime,special,listsp,listy,life, show2, x4, costume
 		if timefire != 0:
 			timefire -= 1
 			if lent == 0:
@@ -315,7 +386,10 @@ def specialattack():
 		else:
 			special = False
 			coldtime = 1000
-			timefire = 200
+			if costume != 6:
+				timefire = 200
+			else:
+				timefire = 1000
 			listsp = []
 			listy = []
 def ban():
@@ -344,9 +418,42 @@ def ban():
 						show2 = False
 					listxc.remove(listxc[f])
 					listyc.remove(listyc[f])
-
+def banc5():
+	global pressed, lend, listxc,listyc,life, show2, x4, mun
+	if pressed == True:	
+		if lend == 0:
+			if mun == 'r':
+				listxc.append(x2)
+				listyc.append(y2)
+				pressed = False
+				lend = 25
+				mun = 'l'
+			elif mun == 'l':
+				listxc.append(x2 + 50)
+				listyc.append(y2)
+				pressed = False
+				lend = 25
+				mun = 'r'
+	if listxc != []:
+		for b in range(len(listxc)):
+			if b >= len(listxc):
+				break
+			fire(listxc[b],listyc[b])
+			for z in range(len(listyc)):
+				listyc[z] -= 5
+			for f in range(len(listyc)):
+				if f >= len(listyc) :
+					break
+				if listyc[f] == 5:
+					DISPLAYSURF.blit(explosion,(listxc[f] - 25,listyc[f] - 50))
+					if listxc[f] >= x and listxc[f] < x + 100:
+						life -= 1
+					if listxc[f] >= x4 - 10 and listxc[f] < x + 30:
+						show2 = False
+					listxc.remove(listxc[f])
+					listyc.remove(listyc[f])
 def specialweapon():
-	global x2, y2, xw, yw, x, y, life, countw, weapon
+	global x2, y2, xw, yw, x, y, life, countw, weapon,costume
 	spwea(xw,yw)
 	yw -= 5
 	if xw > x:
@@ -355,12 +462,15 @@ def specialweapon():
 		xw += 5
 	if yw <= 10:
 		DISPLAYSURF.blit(explosion,(xw - 25,yw + 50))
-		life -= 1
+		if costume != 6:
+			life -= 1
+		else:
+			life -= 2
 		countw = 1000
 		weapon = False
 def reset():
 	global start, x, y, ca, can2, x2, y2, bum, yposition, xposition, mousex, mousey, dir, bum2, dir2, life, life2, fie, counttime, timecount, xposition, show, count, counttime2, special, listsp
-	global listy, timefire, coldtime,lent, listxc, listyc, lend
+	global listy, timefire, coldtime,lent, listxc, listyc, lend, costume
 	start = False
 	x = 400
 	y = 0
@@ -376,8 +486,11 @@ def reset():
 	dir = 'right'
 	bum2 = False
 	dir2 = 'shit'
-	life = 5
-	life2 = 5
+	life = 20
+	if costume != 6:
+		life2 = 6
+	if costume == 6:
+		life2 = 10
 	fie = False
 	counttime2 = 50
 	timecount = random.randint(85,150)
@@ -415,21 +528,27 @@ def reset():
 	counth = 100
 	just = False
 def lose():
-	global counttime2, start, life2
+	global counttime2, start, life2, money, costume
 	counttime2 -= 1
 	font('You lose!',BLACK, WHITE,350,375,32)
 	if counttime2 == 0:
 		start = False
 		counttime2 = 50
-		life2 = 5
+		if costume != 6:
+			life2 = 6
+		if costume == 6:
+			life2 = 10
+		if money != 0:
+			money -= 50
 def win():
-	global counttime, life, exp
+	global counttime, life, exp, money
 	counttime -= 1
 	font('You Win!',BLACK, WHITE, 350,375,32)
 	if counttime == 0:
-		life = 5
+		life = 20
 		counttime = 50
 		exp += 2
+		money += 100
 def pcmove():
 	global dir, x, x4, touch
 	if dir == 'right':
@@ -445,14 +564,17 @@ def pcmove():
 		if x <= 10:
 			dir = 'right'
 def pcban():
-	global yposition, xposition, x2, life2
+	global yposition, xposition, x2, life2,costume
 	fire(xposition,yposition)
 	yposition += 5
 	if yposition == 750:
 		if xposition > x2 and xposition < x2 + 100:
-			life2 -= 1
+			if costume != 6:
+				life2 -= 1
+			else:
+				life2 -= 0.5
 def pcban2():
-	global ylist, xlist, x2, life2
+	global ylist, xlist, x2, life2,costume
 	for b in range(len(xlist)):
 		if b >= len(xlist):
 			break
@@ -460,19 +582,34 @@ def pcban2():
 		ylist[b] += 5
 		if ylist[b] > 755:
 			if xlist[b] > x2 and xlist[b] < x2 + 100:
-				life2 -= 1
+				if costume != 6:
+					life2 -= 1
+				else:
+					life2 -= 0.5
 			xlist.remove(xlist[b])
 			ylist.remove(ylist[b])
 
 def move():
-	global dir2, can2, x2
+	global dir2, can2, x2,costume
 	if dir2 == 'right':
 		if can2 == True:
-			x2 += 5
+			if costume != 6:
+				x2 += 5
+			else:
+				x2 += 1
 	if dir2 == 'left':
 		if can == True:
-			x2 -= 5
-
+			if costume != 6:
+				x2 -= 5
+			else:
+				x2 -= 1
+pygame.draw.rect(DISPLAYSURF, WHITE, (375, 600, 45, 50))
+def effect():
+	global costume
+	if costume == 5:
+		font('Effect: Speed of normal attack is higher than normal(double gun barrel)',BLACK,WHITE,500,300,15)
+	if costume == 6:
+		font('Effect: Move slower than normal but it has more life. No normal attack but the time of special attack is more than normal. The power of special weapon is more than normal.',BLACK,WHITE,600,300,10)
 def cosoftank():
 	global costume
 	if costume == 1:
@@ -483,6 +620,10 @@ def cosoftank():
 		tank2c3(x2,y2)
 	if costume == 4:
 		tank2c4(x2,y2)
+	if costume == 5:
+		tank2c5(x2,y2)
+	if costume == 6:
+		tank2c6(x2,y2)
 def level1():
 	global life, timecount, xposition, yposition, bum
 	if life != 0:
@@ -519,6 +660,7 @@ def level2():
 def bartype(x,y):
 	pygame.draw.rect(DISPLAYSURF, WHITE, (x,y, 200 , 25))
 def replace(file, search_for, replace_with):
+	#print('search: ',search_for,' replace: ',replace_with)
 	# replace strings in a text file
 	back = os.path.splitext(file)[0] + ".bak"
 	temp = os.path.splitext(file)[0] + ".tmp"
@@ -531,10 +673,11 @@ def replace(file, search_for, replace_with):
 	fo = open(temp, "w")
 	for s in fi.readlines():
 		fo.write(str.replace(s, search_for, replace_with))
+		#print('s: ',s)
 	fi.close()
 	fo.close()
 	try:
-	# remove old backup file, if any
+		# remove old backup file, if any
 		os.remove(back)
 	except os.error:
 		pass
@@ -544,7 +687,8 @@ def replace(file, search_for, replace_with):
 	os.rename(temp, file)
 def tkmk():
 	global info, name, rest
-	account = open("info.doc", "r")
+	account = open("info.doc", "a+")
+	account.seek(0)
 	accoun = account.read()
 	na = str(accoun).split(':')
 	info = []
@@ -559,9 +703,282 @@ def tkmk():
 	for s in range(len(na)):
 		if s != 0:
 			info.append(na[s])
+timport = 100
+def log_in():
+	global p,let,pas,finish,restr,printlogin,clicked,mousex,mousey,typeletter,letteraccount,typepass,passaccount,finishletter,finishpass,p,info,perlevel,unlocked,exp,expmax,money,unlocked2,defaut,loged,logout,login,timport
+	tkmk()
+	restr = False
+	if printlogin == True:
+		bartype(600,100)
+		font('Account:',WHITE,BLACK,700,80,25)
+		bartype(600,200)
+		font('Password:',WHITE,BLACK,700,150,25)
+		font('Login',BLACK,WHITE,600,275,32)
+	if clicked == True:
+		if mousex >= 450 and mousex <= 750 and mousey >= 75 and mousey <= 125:
+			typeletter = True
+			letteraccount = ''
+			clicked = False
+			typepass = False
+			finishpass = True
+			pas = p * len(passaccount)
+		if mousex >= 450 and mousex <= 750 and mousey >= 175 and mousey <= 225:
+			typepass = True
+			passaccount = ''
+			clicked = False
+			typeletter = False
+			finishletter = True
+			let = letteraccount
+	if mousex >= 400 and mousex <= 700 and mousey >= 235 and mousey <= 325:
+		font('Login',BLACK,WHITE,600,275,45)
+		if clicked == True:
+			finishletter = True
+			finishpass = True
+	if typeletter == True:
+		typepass = False
+		finishpass = True
+		font(str(letteraccount),BLACK,WHITE,700,110,20)
+		let = letteraccount
+		if finish == True:
+			finishletter = True
+			let = letteraccount
+			typeletter = False
+	if finishletter == True:
+		font(str(let),BLACK,WHITE,700,110,20)
+	if typepass == True:
+		typeletter = False
+		finishletter = True
+		font(str(p * len(passaccount)),BLACK,WHITE,700,210,20)
+		pas = p * len(passaccount)
+		if finish == True:
+			finishpass = True
+			pas = p * len(passaccount)
+			typepass = False
+	if finishpass == True:
+		font(str(pas),BLACK,WHITE,700,210,20)
+	if finish == True:
+		if finishletter == True:
+			if finishpass == True:
+				for a in range(len(name)):
+					#print('let: ',let,' name[a]: ',name[a])
+					if let == name[a]:
+						if passaccount == info[(a * 8)]:
+							perlevel = info[(a * 8) + 1]
+							perlevel = int(perlevel)
+							unlocked = info[(a * 8) + 2]
+							exp = info[(a * 8) + 3]
+							exp = int(exp)
+							expmax = perlevel * 10
+							expmax = int(expmax)
+							money = info[(a * 8) + 5]
+							money = int(money)
+							unlocked2 = info[(a * 8) + 6]
+							highscore = info[(a * 8) + 7]
+							defaut = a
+							printlogin = False
+							finish = False
+							loged = True
+							logout = False
+							letteraccount = ''
+							passaccount = ''
+							let = None
+							pas = None
+							finishpass = False
+							finishletter = False
+							login = False
+							break
+						else:
+							if timport != 0:
+								font('Wrong!',BLACK,WHITE,375,375,32)
+								timport -= 1
+							else:
+								finish = False
+								finishletter = False
+								finishpass = False
+								timport = 50
+					else:
+						if timport != 0:
+							font('Wrong!',BLACK,WHITE,375,320,32)
+							timport -= 1
+						else:
+							finish = False
+							finishletter = False
+							finishpass = False
+							timport = 50
+def signup():
+	global login,printre,clicked,mousex,mousey,typeletter,letteraccount,typepass,passaccount,pas,p,let,finish,finishletter,finishpass,name,already,passe,restr,account,accoun,name,info,rest
+	login = False
+	tkmk()
+	if printre == True:
+		bartype(450,100)
+		bartype(450,200)
+	if clicked == True:
+		if mousex >= 150 and mousex <= 550 and mousey >= 75 and mousey <= 125:
+			typeletter = True
+			letteraccount = ''
+			clicked = False
+			typepass = False
+			finishpass = True
+			pas = p * len(passaccount)
+		if mousex >= 150 and mousex <= 550 and mousey >= 175 and mousey <= 225:
+			typepass = True
+			passaccount = ''
+			clicked = False
+			typeletter = False
+			finishletter = True
+			let = letteraccount
+	if typeletter == True:
+		font(str(letteraccount),BLACK,WHITE,550,110,20)
+		if finishletter == True:
+			finishletter = True
+			let = letteraccount
+			typeletter = False
+	if finishletter == True:
+		font(str(let),BLACK,WHITE,550,110,20)
+	if typepass == True:
+		font(str(p * len(passaccount)),BLACK,WHITE,550,210,20)
+		if finish == True:
+			finishpass = True
+			pas = p * len(passaccount)
+			typepass = False
+	if finishpass == True:
+		font(str(pas),BLACK,WHITE,550,210,20)
+	if finish == True:
+		#print(name)
+		for a in range(len(name)):
+			#print('sign up let: ',let,' name[a]: ',name[a])
+			if let == name[a]:
+				already = True
+				passe = False
+				break
+			else:
+				already = False
+				if finishletter == True:
+					if finishpass == True:
+						passe = True
+	#print('account: ',let,' pass: ',passaccount)
+	if passe == True:
+		if already == False:
+			if letteraccount != '' and passaccount != '':
+				new = ':' + str(let)+':;'+str(passaccount)+';1;False;0;10;100;False;0'
+				account.write(new)
+				account.close()
+				tkmk()
+				finish = False
+				finishpass = False
+				finishletter = False
+				letteraccount = ''
+				passaccount = ''
+				restr = False
+				printre = False
+				passe = False
+	#print('account: ',let,'pass: ',passaccount)
+def savegame():
+	old = name[(defaut)]+':;'+info[(defaut * 8)]+';'+info[(defaut * 8) + 1] + ';' + info[(defaut * 8) + 2] + ';' + info[(defaut * 8) + 3] + ';' + info[(defaut * 8) + 4] + ';' + info[(defaut * 8) + 5]+';'+info[(defaut * 8) + 6] + ';' + info[(defaut*8) + 7]
+	new = name[defaut] + ':;'+ info[(defaut * 7)]+';'+ str(perlevel) + ';'+ str(unlocked) + ';'+ str(exp) + ';'+ str(expmax) + ';' + str(money) + ';' + str(unlocked2)
+	replace('info.doc',old,new)
+def startgame():
+	global coldtime,countw,perlevel,show2,level,exp,expmax,fie,bum2,count,show,yposition2,xposition2,x2,special,weapon,lend,counth,just,xh,yh,y2,score,speed
+	DISPLAYSURF.fill(WHITE)
+	cold = (1000 - coldtime) / 10
+	barcold(645,75,cold)
+	w = (1000 - countw) / 10
+	barcold(645,115,w)
+	score += int(speed)
+	speed += 0.00001
+	font(score,BLUE,WHITE,600,15,20)
+	font(life,BLACK,WHITE,15,15,32)
+	font(life2,BLACK,WHITE,30,755,32)
+	font('QUIT',BLACK,WHITE,750,400,32)
+	font('Level: '+str(perlevel),BLACK,WHITE, 740,750,32)
+	aircraft(x3,y3)
+	airmove()
+	airfire()
+	if show2 == True:
+		per(x4,y4)
+		permove()
+		perfire()
+	if mousex >= 730 and mousex <= 775 and mousey >= 390 and mousey <= 415:
+		if clicked == True:
+			reset()
+	if life <= 0:
+		win()
+		tankex(x,y)
+		show2 = True
+		if level == 1:
+			level = 2
+	if exp >= expmax:
+		perlevel += 1
+		exp = 0
+		expmax += 10
+	pcmove()
+	if level == 1:
+		level1()
+		if life != 0:
+			tank(x,y)
+	else:
+		level2()
+		if life != 0:
+			tankc2(x,y)
+	if life2 <= 0:
+		lose()
+		tankex(x2,y2)
+	move()
+	if life2 != 0:
+		cosoftank()
+	if fie == True:
+		yposition2 = y2 - 50
+		xposition2 = x2 + 50
+		bum2 = True
+	if bum2 == True:
+		if costume != 5:
+			if costume != 6:
+				ban()
+		else:
+			banc5()
+	if yposition2 < 1:
+		if show == True:
+			count -= 1
+			DISPLAYSURF.blit(explosion,(xposition2 - 50,yposition2 - 125 ))
+			if count == 0:
+				show = False
+				count = 10
+		bum2 = False
+	if x2 <= 0:
+		can = False
+	else:
+		can = True
+	if x2 >= 710:
+		can2 = False
+	else:
+		can2 = True
+	if special == True:
+		specialattack()
+	if countw != 0:
+		countw -= 1
+		weapon = False
+	if weapon == True:
+		if countw <= 0:
+			specialweapon()
+	if coldtime != 0:
+		coldtime -= 1
+	if lend != 0:
+		lend -= 1
+		if counth != 0:
+			counth -= 1
+		if counth == 0:
+			just = True
+	if counth == 0:	
+		if just == True:
+			xh = x
+			yh = y
+			just = False
+		heavy()
+pygame.draw.rect(DISPLAYSURF, WHITE, (375, 600, 50, 50))
 bumlevel = False
 ylist = []
 xlist = []
+score = 0
 explosion = pygame.image.load('ex.png')
 counttime = 50
 start = False
@@ -574,6 +991,7 @@ listy = []
 timefire = 200
 coldtime = 0
 lent = 15
+speed = 1
 listxc = []
 listyc = []
 lend = 0
@@ -601,104 +1019,63 @@ timemachine = 50
 passe = False
 logout = True
 just = True
+money = 0
+mun = 'r'
+finishletter = False
+finishpass = False
+p = '*'
+let = ''
+pas = ''
+pygame.draw.rect(DISPLAYSURF, WHITE, (375, 600, 100, 50))
 while True:
 	DISPLAYSURF.fill(BLACK)
+	'''if typeletter == False:
+		letteraccount = ''
+	if typepass == False:
+		passaccount = '' '''
+	tkmk()
+	shortBubbleSort(high)
 	if printlogin == True:
 		font('LOG IN',BLACK,WHITE,700, 50,32)
 	else:
 		font('Welcome back '+str(name[defaut])+'!',WHITE,BLACK,450,50,24)
 	if loged == True:
 		font('Log out',BLACK,WHITE,700,50,32)
+		'''for f in range(3):
+			font(high[f],WHITE,BLACK,125,400 + (f * 10),32)'''
+	font('Money: '+str(money) + ' $',WHITE,BLACK,100,125,32)
 	font('PLAY',BLACK,WHITE,375,375,32)
 	font('CUSTOM',BLACK,WHITE,375,425,32)
 	font('HELP',BLACK,WHITE,375,475,32)
 	font('Level: '+str(perlevel),WHITE,BLACK,100,50,32)
+	font('Exp: '+str(exp)+'/'+str(expmax),WHITE,BLACK,100,80,32)
 	font('Save',BLACK,WHITE,375,700,32)
 	if printlogin != False:
 		font('REGISTER',BLACK,WHITE,550,50,32)
 	if login == True:
-		tkmk()
-		restr = False
-		if printlogin == True:
-			bartype(600,100)
-		if clicked == True:
-			if mousex >= 450 and mousex <= 750 and mousey >= 75 and mousey <= 125:
-				typeletter = True
-				letteraccount = ''
-				clicked = False
-		if typeletter == True:
-			font(str(letteraccount),BLACK,WHITE,700,110,20)
-		if finish == True:
-			for a in range(len(name)):
-				if letteraccount == name[a]:
-					#if a != 0:
-					#perlevel = info[(a*4) + 1]
-					#perlevel = int(perlevel)
-					#unlocked = info[(a*4) + 2]
-					#exp = info[(a * 4) + 3]
-					#exp = int(exp)
-					#expmax = info[(a *4) + 4]
-					#expmax = int(expmax)
-					#else:
-					perlevel = info[(a * 4)]
-					perlevel = int(perlevel)
-					unlocked = info[(a * 4) + 1]
-					exp = info[(a * 4) + 2]
-					exp = int(exp)
-					expmax = perlevel * 10
-					expmax = int(expmax)
-					defaut = a
-					printlogin = False
-					finish = False
-					loged = True
-					logout = False
-					letteraccount = ''
-					break
+		log_in()
 	else:
 		if restr != True:
 			passaccount = ''
 			letteraccount = ''
 			finish = False
 			login = False
+			finishetter = False
+			finishpass = False
 	if logout == True:
 		if just == True:
 			perlevel = 1
 			unlocked = [1]
 			exp = 0
 			expmax = 10
+			money = 0
 			loged = False
 			printlogin = True
+			printre = True
 			letteraccount = ''
 			just = False
 	if restr == True:
-		login = False
-		if printre == True:
-			bartype(450,100)
-		if clicked == True:
-			if mousex >= 150 and mousex <= 550 and mousey >= 75 and mousey <= 125:
-				typeletter = True
-				letteraccount = ''
-				clicked = False
-		if typeletter == True:
-			font(str(letteraccount),BLACK,WHITE,550,110,20)
-		if finish == True:
-			for a in range(len(name)):
-				if letteraccount == name[a]:
-					already = True
-					passe = False
-					break
-				else:
-					already = False
-					passe = True
-		if passe == True:
-			if already == False:
-				new = accoun + ':'+str(letteraccount)+':;1;[1];0;10'
-				replace('info.doc',accoun,new)
-				finish = False
-				restr = False
-				printre = False
-				passe = False
-				
+		signup()
 	if already == True:
 		font("It has already!",BLACK,WHITE,375,375,70)
 		timemachine -= 1
@@ -743,9 +1120,7 @@ while True:
 		font('Save',BLACK,WHITE,375,700,45)
 		if clicked == True:
 			if loged == True:
-				old = name[(defaut)] +':;' + info[(defaut * 4) + 0] + ';' + info[(defaut * 4) + 1] + ';' + info[(defaut * 4) + 2] + ';' + info[(defaut * 4) + 3]
-				new = name[defaut] + ':;'+ str(perlevel) + ';'+ unlocked + ';'+ str(exp) + ';'+ str(expmax)
-				replace('info.doc',old,new)
+				savegame()
 	if modec == True:
 		font('CUSTOM',BLACK,WHITE,375,425,45)
 	if mousex >= 325 and mousex <= 450 and mousey >= 475 and mousey <= 525:
@@ -755,94 +1130,7 @@ while True:
 	if changec == True:
 		cos()
 	if start == True:
-		DISPLAYSURF.fill(WHITE)
-		cold = (1000 - coldtime) / 10
-		barcold(645,75,cold)
-		w = (1000 - countw) / 10
-		barcold(645,115,w)
-		font(life,BLACK,WHITE,15,15,32)
-		font(life2,BLACK,WHITE,15,755,32)
-		font('QUIT',BLACK,WHITE,750,400,32)
-		font('Level: '+str(level),BLACK,WHITE, 740,750,32)
-		aircraft(x3,y3)
-		airmove()
-		airfire()
-		if show2 == True:
-			per(x4,y4)
-			permove()
-			perfire()
-		if mousex >= 730 and mousex <= 775 and mousey >= 390 and mousey <= 415:
-			if clicked == True:
-				reset()
-		if life <= 0:
-			win()
-			tankex(x,y)
-			show2 = True
-			if level == 1:
-				level = 2
-		if exp >= expmax:
-			perlevel += 1
-			exp = 0
-			expmax += 10
-		pcmove()
-		if level == 1:
-			level1()
-			if life != 0:
-				tank(x,y)
-		else:
-			level2()
-			if life != 0:
-				tankc2(x,y)
-		if life2 <= 0:
-			lose()
-			tankex(x2,y2)
-		move()
-		if life2 != 0:
-			cosoftank()
-		if fie == True:
-			yposition2 = y2 - 50
-			xposition2 = x2 + 50
-			bum2 = True
-		if bum2 == True:
-			ban()
-		if yposition2 < 1:
-			if show == True:
-				count -= 1
-				DISPLAYSURF.blit(explosion,(xposition2 - 50,yposition2 - 125 ))
-				if count == 0:
-					show = False
-					count = 10
-			bum2 = False
-		if x2 <= 0:
-			can = False
-		else:
-			can = True
-		if x2 >= 710:
-			can2 = False
-		else:
-			can2 = True
-		if special == True:
-			specialattack()
-		if countw != 0:
-			countw -= 1
-			weapon = False
-		if weapon == True:
-			if countw <= 0:
-				specialweapon()
-		if coldtime != 0:
-			coldtime -= 1
-		if lend != 0:
-			lend -= 1
-		if counth != 0:
-			counth -= 1
-			if counth == 0:
-				just = True
-		if counth == 0:	
-			if just == True:
-				xh = x
-				yh = y
-				just = False
-			heavy()
+		startgame()
 	for event in pygame.event.get():
 		if event.type == 4:
 			mousex, mousey = event.pos
@@ -886,6 +1174,11 @@ while True:
 			else:
 				fie = False
 				pressed = False
+			'''if login == True:
+				if event.key != 13:
+					if event.key != 8:
+						letteraccount += str(chr(int(event.key)))
+						passaccount += str(chr(int(event.key)))'''
 			if event.key == K_a:
 				letteraccount += 'a'
 				passaccount += 'a'
@@ -967,8 +1260,14 @@ while True:
 						break
 					letterac += letteraccount[s]
 				letteraccount = letterac
+				for s in range(len(passaccount)):
+					if s == len(passaccount) - 1:
+						break
+					passac += passaccount[s]
+				passaccount = passac
 			else:
 				letterac = ''
+				passac = ''
 			if event.key == 13:
 				finish = True
 			else:
@@ -976,6 +1275,5 @@ while True:
 		elif event.type != KEYDOWN:
 			dir2 = 'shit'
 			fie = False
-			finish = False
 			letterac = ''
 	pygame.display.update()

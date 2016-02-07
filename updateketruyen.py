@@ -1,5 +1,7 @@
 import time
 import os
+def music():
+	os.system("afplay "+"/Users/NguyenVietHung/learn-python/DeathNoteSuiteDeathNote.mp3")
 def t():
 	time.sleep(2)
 def head():
@@ -15,7 +17,7 @@ def speak(firstline):
 			time.sleep(0.5)
 	t()
 head()
-t()
+music()
 speak('\n\t\t\b\bThis note can kill a human... ')
 speak("\n\t\t\b\bThe human whose name is written in this note will die in 40 seconds...  ")
 speak("\n\t\t\b\bThis note will not take effet unleas the writer has person's face in their mind his/her name...  ")

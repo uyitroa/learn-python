@@ -1,0 +1,2 @@
+print("Enter a string")
+

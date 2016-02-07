@@ -1,4 +1,4 @@
-import pygame, sys
+import pygame, sys,os
 from pygame.locals import *
 pygame.init()
 BLUE = (0, 0,255)

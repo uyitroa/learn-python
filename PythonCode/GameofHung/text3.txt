@@ -1,0 +1,2 @@
+mytext = open("text4.py","w")
+mytext.write("Ok it's good and bye bye")
