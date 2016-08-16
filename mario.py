@@ -8,11 +8,20 @@ GREEN = (0, 128, 0)
 YELLOW = (255, 255, 0)
 DISPLAYSURF = pygame.display.set_mode((800,800))
 pygame.display.set_caption('Hello World!')
+marioRight = pygame.image.load('mario character')
+marioLeft = pygame.image.load('mario character left')
+ground = pygame.image.load('ground mario')
+block = pygame.image.load('mario block')
+enemy = pygame.image.load('EnemyMario')
 class character:
-	def __init__(self,xmario,ymario,point):
+	def __init__(self,xmario,ymario,point,xblock,yblock,xenemy,yenemy):
 		self.xmario = xmario
 		self.ymario = ymario
 		self.point = point
+		self.xblock = xblock
+		self.yblock = yblock
+		self.xenemy = xenemy
+		self.yenemy = yenemy
 	def moveRight(self,step):
 		self.xmario += step
 	def moveLeft(self,step):
@@ -21,20 +30,35 @@ class character:
 		self.ymario -= height
 	def down(self,height):
 		self.ymario += height
+	def showMario(self):
+		DISPLAYSURF.blit(personnage,(self.xmario,self.ymario))
+	def blockMario(self):
+		DISPLAYSURF.blit(block,(self.xblock,self.yblock))
+	def Enemy(self):
+		DISPLAYSURF.blit(enemy,(self.xenemy,self.yenemy))
+		self.xenemy -= 1
+	def allMouvement(self):
+		if self.xmario >= 650:
+			self.xmario -= 5
+			self.xblock -= 5
 	def display(self):
 		print('xmario: ',self.xmario)
 		print('ymario: ',self.ymario)
-mario = character(10,600,0)
+personnage = marioRight
+mario = character(10,600,0,650,405,700,100)
 move = ''
 jump = ''
-jumptime = 6
+jumptime = 24
 jumped = False
 down = False
-downtime = 3
+downtime = 20
 downed = False
 start = True
+xground = 0
 while True:
+	DISPLAYSURF.fill(BLACK)
 	if start == True:
+		DISPLAYSURF.blit(ground,(xground,665))
 		if jumped == True:
 			jumped = False
 			down = True
@@ -42,24 +66,30 @@ while True:
 			downed = False
 			down = False
 		if jump == True:
-			mario.jump(1)
+			mario.jump(5)
 			jumptime -= 1
 			if jumptime == 0:
-				jumptime = 6
+				jumptime = 24
 				jump = ''
 				jumped = True
 		if move == 'right':
+			personnage = marioRight
 			mario.moveRight(5)
 		if move == 'left':
+			personnage = marioLeft
 			mario.moveLeft(5)
 		if down == True:
-			mario.down(2)
+			mario.down(6)
 			downtime -= 1
 			if downtime == 0:
-				downtime = 3
+				downtime = 20
 				down = ''
 				downed = True
 		mario.display()
+		mario.showMario()
+		mario.blockMario()
+		mario.allMouvement()
+		mario.Enemy()
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
