@@ -50,21 +50,37 @@ class character:
 			self.xblock -= 5
 	def touchEnemy(self,down):
 		if self.ymario == 600:
-			if self.xmario >= self.xenemy and self.xmario <= self.yenemy:
+			if self.xmario <= (self.xenemy + self.xenemy + 10)/2 <= self.xmario + 10:
 				GameOver = True
 				font('Game Over',BLACK,WHITE,600,600,32)
 			else:
 				GameOver = None
-		elif down == True:
-			if self.xmario >= self.xenemy and self.xmario <= self.yenemy:
+		elif down == True and self.ymario >= 580:
+			if self.xenemy <= (self.xmario + self.xmario + 10)/2 <= self.xenemy + 10:
+				font('killed',BLACK,WHITE,550,600,32)
 				kill = True
+				self.xenemy = 775
 			else:
 				kill = None
+	def touchBlock(self,timeshow,jump):
+			ju = None
+			if jump == True and self.ymario <= 500:
+				ju =True
+			if ju == True:	
+				if self.xblock <= (self.xmario + self.xmario + 10)/2 <= self.xblock + 10:
+					GameOver = True
+					font('Game Over',BLACK,WHITE,600,600,32)
+					if timeshow != 0:
+						font('You think that you can really destroy a block with your head xD',BLACK,WHITE,500,300,28)
+					else:
+						ju = False
 	def display(self):
 		print('xmario: ',self.xmario)
-		print('ymario: ',self.ymario)
+		print('ymarioyy: ',self.ymario)
+		print('xenemy',self.xblock)
+		print('yenemy',self.yblock)
 personnage = marioRight
-mario = character(10,600,0,650,405,700,510)
+mario = character(10,600,0,650,405,775,600)
 move = ''
 jump = ''
 jumptime = 24
@@ -110,6 +126,7 @@ while True:
 		mario.allMouvement()
 		mario.Enemy()
 		mario.touchEnemy(down)
+		mario.touchBlock(150,jump)
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
