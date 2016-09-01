@@ -12,7 +12,14 @@ marioRight = pygame.image.load('mario character')
 marioLeft = pygame.image.load('mario character left')
 ground = pygame.image.load('ground mario')
 block = pygame.image.load('mario block')
-enemy = pygame.image.load('EnemyMario')
+enemy = pygame.image.load('EnemyMario.png')
+pygame.init()
+def font(e,g,b,x,y,s):
+	fontObj = pygame.font.Font('freesansbold.ttf', s)
+	textSurfaceObj = fontObj.render(str(e), True, g, b)
+	textRectObj = textSurfaceObj.get_rect()
+	textRectObj.center = (x, y)
+	DISPLAYSURF.blit(textSurfaceObj,textRectObj)
 class character:
 	def __init__(self,xmario,ymario,point,xblock,yblock,xenemy,yenemy):
 		self.xmario = xmario
@@ -41,11 +48,23 @@ class character:
 		if self.xmario >= 650:
 			self.xmario -= 5
 			self.xblock -= 5
+	def touchEnemy(self,down):
+		if self.ymario == 600:
+			if self.xmario >= self.xenemy and self.xmario <= self.yenemy:
+				GameOver = True
+				font('Game Over',BLACK,WHITE,600,600,32)
+			else:
+				GameOver = None
+		elif down == True:
+			if self.xmario >= self.xenemy and self.xmario <= self.yenemy:
+				kill = True
+			else:
+				kill = None
 	def display(self):
 		print('xmario: ',self.xmario)
 		print('ymario: ',self.ymario)
 personnage = marioRight
-mario = character(10,600,0,650,405,700,100)
+mario = character(10,600,0,650,405,700,510)
 move = ''
 jump = ''
 jumptime = 24
@@ -90,6 +109,7 @@ while True:
 		mario.blockMario()
 		mario.allMouvement()
 		mario.Enemy()
+		mario.touchEnemy(down)
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
