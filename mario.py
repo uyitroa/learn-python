@@ -8,10 +8,10 @@ GREEN = (0, 128, 0)
 YELLOW = (255, 255, 0)
 DISPLAYSURF = pygame.display.set_mode((800,800))
 pygame.display.set_caption('Hello World!')
-marioRight = pygame.image.load('mario character')
-marioLeft = pygame.image.load('mario character left')
-ground = pygame.image.load('ground mario')
-block = pygame.image.load('mario block')
+marioRight = pygame.image.load('mariocharacter.png')
+marioLeft = pygame.image.load('mariocharacterleft.png')
+ground = pygame.image.load('groundmario.png')
+block = pygame.image.load('marioblock.png')
 enemy = pygame.image.load('EnemyMario.png')
 pygame.init()
 def font(e,g,b,x,y,s):
@@ -20,15 +20,11 @@ def font(e,g,b,x,y,s):
 	textRectObj = textSurfaceObj.get_rect()
 	textRectObj.center = (x, y)
 	DISPLAYSURF.blit(textSurfaceObj,textRectObj)
-class character:
-	def __init__(self,xmario,ymario,point,xblock,yblock,xenemy,yenemy):
+class characterMario:
+	def __init__(self,xmario,ymario,point):
 		self.xmario = xmario
 		self.ymario = ymario
 		self.point = point
-		self.xblock = xblock
-		self.yblock = yblock
-		self.xenemy = xenemy
-		self.yenemy = yenemy
 	def moveRight(self,step):
 		self.xmario += step
 	def moveLeft(self,step):
@@ -39,48 +35,32 @@ class character:
 		self.ymario += height
 	def showMario(self):
 		DISPLAYSURF.blit(personnage,(self.xmario,self.ymario))
-	def blockMario(self):
-		DISPLAYSURF.blit(block,(self.xblock,self.yblock))
 	def Enemy(self):
 		DISPLAYSURF.blit(enemy,(self.xenemy,self.yenemy))
 		self.xenemy -= 1
-	def allMouvement(self):
-		if self.xmario >= 650:
-			self.xmario -= 5
-			self.xblock -= 5
-	def touchEnemy(self,down):
-		if self.ymario == 600:
-			if self.xmario <= (self.xenemy + self.xenemy + 10)/2 <= self.xmario + 10:
-				GameOver = True
-				font('Game Over',BLACK,WHITE,600,600,32)
-			else:
-				GameOver = None
-		elif down == True and self.ymario >= 580:
-			if self.xenemy <= (self.xmario + self.xmario + 10)/2 <= self.xenemy + 10:
-				font('killed',BLACK,WHITE,550,600,32)
-				kill = True
-				self.xenemy = 775
-			else:
-				kill = None
-	def touchBlock(self,timeshow,jump):
-			ju = None
-			if jump == True and self.ymario <= 500:
-				ju =True
-			if ju == True:	
-				if self.xblock <= (self.xmario + self.xmario + 10)/2 <= self.xblock + 10:
-					GameOver = True
-					font('Game Over',BLACK,WHITE,600,600,32)
-					if timeshow != 0:
-						font('You think that you can really destroy a block with your head xD',BLACK,WHITE,500,300,28)
-					else:
-						ju = False
 	def display(self):
 		print('xmario: ',self.xmario)
 		print('ymarioyy: ',self.ymario)
-		print('xenemy',self.xblock)
-		print('yenemy',self.yblock)
+class EnemyMario:
+	def __init__(self,xenemy,yenemy):
+		self.xenemy = xenemy
+		self.yenemy = yenemy
+	def MoveEnemy(self,step):
+		self.xenemy -= step
+	def ShowEnemy(self):
+		DISPLAYSURF.blit(enemy,(self.xenemy,self.yenemy))
+class BlockMario:
+	def __init__(self,xblock,yblock):
+		self.xblock = xblock
+		self.yblock = yblock
+	def ShowBlock(self):
+		DISPLAYSURF.blit(block,(self.xblock,self.yblock))
+	def MoveBlock(self,step):
+		self.xblock -= step
 personnage = marioRight
-mario = character(10,600,0,650,405,775,600)
+mario = characterMario(10,600,0)
+Enemy = EnemyMario(775,600)
+Block = BlockMario(650,405)
 move = ''
 jump = ''
 jumptime = 24
@@ -90,6 +70,39 @@ downtime = 20
 downed = False
 start = True
 xground = 0
+def GameOver():
+	global mario,enemy
+	if mario.ymario == 600:
+		if mario.xmario <= (Enemy.xenemy + Enemy.xenemy + 10)/2 <= mario.xmario + 10:
+			GameOver = True
+			font('Game Over',BLACK,WHITE,600,600,32)
+		else:
+			GameOver = False
+def killEnemy():
+	global mario,Enemy,down
+	if down == True and mario.ymario >= 580:
+		if Enemy.xenemy <= (mario.xmario + mario.xmario + 10)/2 <= Enemy.xenemy + 10:
+			font('killed',BLACK,WHITE,550,600,32)
+			kill = True
+			Enemy.xenemy = 775
+		else:
+			kill = False
+def touchBlock():
+		global mario,Block,jump
+		ju = False
+		timeshow = 50
+		if jump == True and mario.ymario <= 500:
+			ju = True
+		if ju == True:	
+			if Block.xblock <= (mario.xmario + mario.xmario + 10)/2 <= Block.xblock + 10:
+				GameOver = True
+				font('Game Over',BLACK,WHITE,600,600,32)
+				if timeshow != 0:
+					font('You think that you can really destroy a block with your head xD',BLACK,WHITE,500,300,28)
+				else:
+					ju = False
+			else:
+				GameOver = False
 while True:
 	DISPLAYSURF.fill(BLACK)
 	if start == True:
@@ -120,13 +133,17 @@ while True:
 				downtime = 20
 				down = ''
 				downed = True
+		touchBlock()
+		GameOver()
+		killEnemy()
 		mario.display()
 		mario.showMario()
-		mario.blockMario()
-		mario.allMouvement()
-		mario.Enemy()
-		mario.touchEnemy(down)
-		mario.touchBlock(150,jump)
+		Enemy.MoveEnemy(1)
+		Enemy.ShowEnemy()
+		if mario.xmario >= 650:
+			Block.MoveBlock(5)
+			mario.moveLeft(5)
+		Block.ShowBlock()
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
