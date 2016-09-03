@@ -70,10 +70,12 @@ downtime = 20
 downed = False
 start = True
 xground = 0
+ju = 50
 def GameOver():
 	global mario,enemy
 	if mario.ymario == 600:
-		if mario.xmario <= (Enemy.xenemy + Enemy.xenemy + 10)/2 <= mario.xmario + 10:
+		#if mario.xmario <= (Enemy.xenemy + Enemy.xenemy + 10)/2 <= mario.xmario + 10:
+		if Enemy.xenemy + 20 <= mario.xmario <= Enemy.xenemy + 50 or Enemy.xenemy + 20 >= mario.xmario + 50 >= Enemy.xenemy:
 			GameOver = True
 			font('Game Over',BLACK,WHITE,600,600,32)
 		else:
@@ -81,7 +83,8 @@ def GameOver():
 def killEnemy():
 	global mario,Enemy,down
 	if down == True and mario.ymario >= 580:
-		if Enemy.xenemy <= (mario.xmario + mario.xmario + 10)/2 <= Enemy.xenemy + 10:
+		#if Enemy.xenemy <= mario.xmario and mario.xmario + 50 <= Enemy.xenemy + 20:
+		if Enemy.xenemy + 50 <= mario.xmario <= Enemy.xenemy + 50 or Enemy.xenemy + 50 >= mario.xmario + 20 >= Enemy.xenemy:
 			font('killed',BLACK,WHITE,550,600,32)
 			kill = True
 			Enemy.xenemy = 775
@@ -89,12 +92,12 @@ def killEnemy():
 			kill = False
 def touchBlock():
 		global mario,Block,jump
-		ju = False
 		timeshow = 50
+		ju = 50
 		if jump == True and mario.ymario <= 500:
 			ju = True
 		if ju == True:	
-			if Block.xblock <= (mario.xmario + mario.xmario + 10)/2 <= Block.xblock + 10:
+			if Block.xblock <= mario.xmario and mario.xmario + 20 <= Block.xblock + 50:
 				GameOver = True
 				font('Game Over',BLACK,WHITE,600,600,32)
 				if timeshow != 0:
