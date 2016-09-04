@@ -60,6 +60,7 @@ class BlockMario:
 personnage = marioRight
 mario = characterMario(10,600,0)
 Enemy = EnemyMario(775,600)
+Enemy2 = EnemyMario(900,600)
 Block = BlockMario(650,405)
 move = ''
 jump = ''
@@ -71,8 +72,8 @@ downed = False
 start = True
 xground = 0
 ju = 50
-def GameOver():
-	global mario,enemy
+def GameOver(Enemy):
+	global mario
 	if mario.ymario == 600:
 		#if mario.xmario <= (Enemy.xenemy + Enemy.xenemy + 10)/2 <= mario.xmario + 10:
 		if Enemy.xenemy + 20 <= mario.xmario <= Enemy.xenemy + 50 or Enemy.xenemy + 20 >= mario.xmario + 50 >= Enemy.xenemy:
@@ -80,8 +81,8 @@ def GameOver():
 			font('Game Over',BLACK,WHITE,600,600,32)
 		else:
 			GameOver = False
-def killEnemy():
-	global mario,Enemy,down
+def killEnemy(Enemy):
+	global mario,down
 	if down == True and mario.ymario >= 580:
 		#if Enemy.xenemy <= mario.xmario and mario.xmario + 50 <= Enemy.xenemy + 20:
 		if Enemy.xenemy + 50 <= mario.xmario <= Enemy.xenemy + 50 or Enemy.xenemy + 50 >= mario.xmario + 20 >= Enemy.xenemy:
@@ -137,12 +138,16 @@ while True:
 				down = ''
 				downed = True
 		touchBlock()
-		GameOver()
-		killEnemy()
+		GameOver(Enemy)
+		GameOver(Enemy2)
+		killEnemy(Enemy)
+		killEnemy(Enemy2)
 		mario.display()
 		mario.showMario()
 		Enemy.MoveEnemy(1)
+		Enemy2.MoveEnemy(2)
 		Enemy.ShowEnemy()
+		Enemy2.ShowEnemy()
 		if mario.xmario >= 650:
 			Block.MoveBlock(5)
 			mario.moveLeft(5)
