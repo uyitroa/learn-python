@@ -21,10 +21,11 @@ def font(e,g,b,x,y,s):
 	textRectObj.center = (x, y)
 	DISPLAYSURF.blit(textSurfaceObj,textRectObj)
 class characterMario:
-	def __init__(self,xmario,ymario,point):
+	def __init__(self,xmario,ymario,point,life):
 		self.xmario = xmario
 		self.ymario = ymario
 		self.point = point
+		self.life = life
 	def moveRight(self,step):
 		self.xmario += step
 	def moveLeft(self,step):
@@ -33,11 +34,24 @@ class characterMario:
 		self.ymario -= height
 	def down(self,height):
 		self.ymario += height
-	def showMario(self):
-		DISPLAYSURF.blit(personnage,(self.xmario,self.ymario))
-	def Enemy(self):
-		DISPLAYSURF.blit(enemy,(self.xenemy,self.yenemy))
-		self.xenemy -= 1
+	def showMario(self,timerevive):
+		if timerevive % 3 == 1 or timerevive % 3 == 2:
+			DISPLAYSURF.blit(personnage,(self.xmario,self.ymario))
+	def LifeCount(self,number,over,OVER,OVer,timerevive):
+		print(timerevive)
+		if over == True or OVER == True or OVer == True:
+			if timerevive == 17:
+				self.life -= number
+				timerevive -= 1
+		if timerevive != 17:
+			timerevive -= 1
+		if timerevive <= 0:
+			timerevive = 17
+		return timerevive
+	def PointCount(self,number,kill,killl):
+		if kill == True or killl == True:
+			self.point += number
+		print(kill)
 	def display(self):
 		print('xmario: ',self.xmario)
 		print('ymarioyy: ',self.ymario)
@@ -47,6 +61,9 @@ class EnemyMario:
 		self.yenemy = yenemy
 	def MoveEnemy(self,step):
 		self.xenemy -= step
+	def resetX(self):
+		if self.xenemy <= -10:
+			self.xenemy = 800
 	def ShowEnemy(self):
 		DISPLAYSURF.blit(enemy,(self.xenemy,self.yenemy))
 class BlockMario:
@@ -58,7 +75,7 @@ class BlockMario:
 	def MoveBlock(self,step):
 		self.xblock -= step
 personnage = marioRight
-mario = characterMario(10,600,0)
+mario = characterMario(10,595,0,3)
 Enemy = EnemyMario(775,600)
 Enemy2 = EnemyMario(900,600)
 Block = BlockMario(650,405)
@@ -72,17 +89,21 @@ downed = False
 start = True
 xground = 0
 ju = 50
-def GameOver(Enemy):
-	global mario
-	if mario.ymario == 600:
+timerevive = 17
+def GameOVer(Enemy):
+	global mario,timerevive
+	GameOver = False
+	if mario.ymario == 595:
 		#if mario.xmario <= (Enemy.xenemy + Enemy.xenemy + 10)/2 <= mario.xmario + 10:
 		if Enemy.xenemy + 20 <= mario.xmario <= Enemy.xenemy + 50 or Enemy.xenemy + 20 >= mario.xmario + 50 >= Enemy.xenemy:
 			GameOver = True
-			font('Game Over',BLACK,WHITE,600,600,32)
+			font('-1 life',BLACK,WHITE,600,600,32)
 		else:
 			GameOver = False
+		return GameOver
 def killEnemy(Enemy):
 	global mario,down
+	kill = False
 	if down == True and mario.ymario >= 580:
 		#if Enemy.xenemy <= mario.xmario and mario.xmario + 50 <= Enemy.xenemy + 20:
 		if Enemy.xenemy + 50 <= mario.xmario <= Enemy.xenemy + 50 or Enemy.xenemy + 50 >= mario.xmario + 20 >= Enemy.xenemy:
@@ -91,26 +112,33 @@ def killEnemy(Enemy):
 			Enemy.xenemy = 775
 		else:
 			kill = False
+	return kill
 def touchBlock():
 		global mario,Block,jump
 		timeshow = 50
 		ju = 50
+		GameOver = False
 		if jump == True and mario.ymario <= 500:
 			ju = True
 		if ju == True:	
 			if Block.xblock <= mario.xmario and mario.xmario + 20 <= Block.xblock + 50:
 				GameOver = True
-				font('Game Over',BLACK,WHITE,600,600,32)
+				font('-1 life',BLACK,WHITE,600,600,32)
 				if timeshow != 0:
 					font('You think that you can really destroy a block with your head xD',BLACK,WHITE,500,300,28)
 				else:
 					ju = False
 			else:
 				GameOver = False
+		return GameOver
 while True:
 	DISPLAYSURF.fill(BLACK)
 	if start == True:
 		DISPLAYSURF.blit(ground,(xground,665))
+		font('Life: '+str(mario.life),WHITE,BLACK,700,100,32)
+		font('Point: '+str(mario.point),WHITE,BLACK,100,100,32)
+		if mario.life <= 0:
+			font('Game Over',BLACK,WHITE,500,500,32)
 		if jumped == True:
 			jumped = False
 			down = True
@@ -137,17 +165,21 @@ while True:
 				downtime = 20
 				down = ''
 				downed = True
-		touchBlock()
-		GameOver(Enemy)
-		GameOver(Enemy2)
-		killEnemy(Enemy)
-		killEnemy(Enemy2)
+		GameOver = touchBlock()
+		GameOVEr = GameOVer(Enemy)
+		GameOVER = GameOVer(Enemy2)
+		killl = killEnemy(Enemy)
+		kill = killEnemy(Enemy2)
+		timerevive = mario.LifeCount(1,GameOVER,GameOver,GameOVEr,timerevive)
+		mario.PointCount(10,kill,killl)
 		mario.display()
-		mario.showMario()
+		mario.showMario(timerevive)
 		Enemy.MoveEnemy(1)
 		Enemy2.MoveEnemy(2)
 		Enemy.ShowEnemy()
 		Enemy2.ShowEnemy()
+		Enemy.resetX()
+		Enemy2.resetX()
 		if mario.xmario >= 650:
 			Block.MoveBlock(5)
 			mario.moveLeft(5)
