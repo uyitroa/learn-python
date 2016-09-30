@@ -63,7 +63,7 @@ class EnemyMario:
 		self.xenemy -= step
 	def resetX(self):
 		if self.xenemy <= -10:
-			self.xenemy = 800
+			self.xenemy = 1000
 	def ShowEnemy(self):
 		DISPLAYSURF.blit(enemy,(self.xenemy,self.yenemy))
 class BlockMario:
@@ -75,12 +75,14 @@ class BlockMario:
 	def MoveBlock(self,step):
 		self.xblock -= step
 personnage = marioRight
-mario = characterMario(10,595,0,3)
+groundMario = 595
+mario = characterMario(10,groundMario,0,3)
 Enemy = EnemyMario(775,600)
 Enemy2 = EnemyMario(900,600)
 Block = BlockMario(650,405)
 move = ''
 jump = ''
+distMario = 10
 jumptime = 24
 jumped = False
 down = False
@@ -109,7 +111,7 @@ def killEnemy(Enemy):
 		if Enemy.xenemy + 50 <= mario.xmario <= Enemy.xenemy + 50 or Enemy.xenemy + 50 >= mario.xmario + 20 >= Enemy.xenemy:
 			font('killed',BLACK,WHITE,550,600,32)
 			kill = True
-			Enemy.xenemy = 775
+			Enemy.xenemy = 1000
 		else:
 			kill = False
 	return kill
@@ -155,9 +157,11 @@ while True:
 		if move == 'right':
 			personnage = marioRight
 			mario.moveRight(5)
+			distMario += 5
 		if move == 'left':
 			personnage = marioLeft
 			mario.moveLeft(5)
+			distMario -= 5
 		if down == True:
 			mario.down(6)
 			downtime -= 1
@@ -184,6 +188,7 @@ while True:
 			Block.MoveBlock(5)
 			mario.moveLeft(5)
 		Block.ShowBlock()
+		print('dist',distMario)
 	for event in pygame.event.get():
 		if event.type == QUIT:
 			pygame.quit()
