@@ -11,19 +11,50 @@ s.listen(5)                 # Now wait for client connection.
 c, addr = s.accept()     # Establish connection with client.
 print 'Got connection from', addr
 c.send('Thank you for connecting')
-def Conver(x):
+def converplus(x):
 	x = str(x)
 	x = x.split('+')
 	x[0] = int(x[0])
 	x[1] = int(x[1])
 	result = x[0] + x[1]
 	return result
+def converminus(x):
+	x = str(x)
+	x = x.split('-')
+	x[0] = int(x[0])
+	x[1] = int(x[1])
+	result = x[0] - x[1]
+	return result
+def convermul(x):
+	x = str(x)
+	x = x.split('*')
+	x[0] = int(x[0])
+	x[1] = int(x[1])
+	result = x[0] * x[1]
+	return result
+def converdiv(x):
+	x = str(x)
+	x = x.split('/')
+	x[0] = float(x[0])
+	x[1] = float(x[1])
+	result = x[0] / x[1]
+	return result
 while True:
    msg=c.recv(1024)
    if len(msg)>0:
       print "\n"
       print msg
-      result = Conver(msg)
-      result = str(result)
+      if '+' in msg:  
+         result = converplus(msg)
+         result = str(result)
+      elif '-' in msg:
+         result = converminus(msg)
+         result = str(result)
+      elif '*' in msg:
+         result = convermul(msg)
+         result = str(result)
+      elif '/' in msg:
+         result = converdiv(msg)
+         result = str(result)
       c.send(result)
    
