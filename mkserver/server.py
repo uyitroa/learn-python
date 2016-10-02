@@ -9,52 +9,18 @@ s.bind((host, port))        # Bind to the port
 
 s.listen(5)                 # Now wait for client connection.
 c, addr = s.accept()     # Establish connection with client.
+s.listen(4)
+c2, addr2 = s.accept()
 print 'Got connection from', addr
+print 'Got second connection from ',addr2
 c.send('Thank you for connecting')
-def converplus(x):
-	x = str(x)
-	x = x.split('+')
-	x[0] = int(x[0])
-	x[1] = int(x[1])
-	result = x[0] + x[1]
-	return result
-def converminus(x):
-	x = str(x)
-	x = x.split('-')
-	x[0] = int(x[0])
-	x[1] = int(x[1])
-	result = x[0] - x[1]
-	return result
-def convermul(x):
-	x = str(x)
-	x = x.split('*')
-	x[0] = int(x[0])
-	x[1] = int(x[1])
-	result = x[0] * x[1]
-	return result
-def converdiv(x):
-	x = str(x)
-	x = x.split('/')
-	x[0] = float(x[0])
-	x[1] = float(x[1])
-	result = x[0] / x[1]
-	return result
+c2.send('Thank you for connecting')
 while True:
-   msg=c.recv(1024)
-   if len(msg)>0:
-      print "\n"
-      print msg
-      if '+' in msg:  
-         result = converplus(msg)
-         result = str(result)
-      elif '-' in msg:
-         result = converminus(msg)
-         result = str(result)
-      elif '*' in msg:
-         result = convermul(msg)
-         result = str(result)
-      elif '/' in msg:
-         result = converdiv(msg)
-         result = str(result)
-      c.send(result)
-   
+	msg=c.recv(1024)
+	if len(msg)>0:
+		c2.send('\n')
+		c2.send(msg)
+#	msg2 = c2.recv(1024)
+#	if len(msg2) > 0:
+#		c.send('\n')
+#		c.send(msg2)

@@ -10,11 +10,13 @@ print(s.recv(1024))
 nb=0
 while nb<10:
 	nb += 1
-	print('Going to send '+str(nb))
-#		msg = s.recv(1024)
-#		if len(msg) > 0:
-#			print('\n')
-#			print(msg)
-#	else:
-	x = raw_input()
-	s.send(x)
+	print("(1)Type or (2)receive message")
+	y = int(raw_input())
+	if y == 1:
+		x = raw_input()
+		s.send(x)
+	else:
+		msg = s.recv(1024)
+		if len(msg) > 0:
+			print('\n')
+			print(msg)
