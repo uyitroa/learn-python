@@ -1,0 +1,1 @@
+isThisWrong.txt;sentenceToSayHello.txt;wayToAskName.txt;answerFine.txt;answerNotFine.txt;donotUnderstand.txt;usersMemory.txt;wayToAskHealth.txt;wayToAskExplain.txt;answerYes.txt;answerNo.txt;

@@ -11,10 +11,11 @@ while again == 'yes':
 	#print("Table:\n",table)
 	system = int(input("1.Bina\n2.Decimal\n3.Hexa\nYour choice: "))
 	if system == 1:
-		bit = int(input("Code: "))
+		bit = input("Code: ")
 		while len(bit) % 8 != 0:
 			print("Your binary code is must be divisible by 8.!!!")
 			bit = input("Code: ")
+		#bit = int(bit)
 		n = int(bit,2)
 		code = n.to_bytes((n.bit_length() + 7) // 8, 'big').decode()
 		print("Translate: ",code)

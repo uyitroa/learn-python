@@ -1,0 +1,3 @@
+tell application "Safari"
+    set url_list to URL of every document
+end tell
