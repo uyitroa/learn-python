@@ -1,3 +1,4 @@
+#python 2.7
 def turnToNum(alpha,word,maxLen):
 	# turnToNum(alphabeticList, word)  turn all to number to simplify task ex: abc = 123
 	decoded = ""
