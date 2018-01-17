@@ -1,4 +1,3 @@
-# pizza test round
 import numpy as np
 
 arr = np.array([[1,1,1,0,0,1,1],[1,0,0,1,1,0,1],[0,1,0,0,1,0,1],[1,1,1,1,0,1,1],[1,1,0,1,1,0,0],[0,0,0,0,1,1,1]])
@@ -14,7 +13,7 @@ class cutSlice:
     self.arr = arr
 
     self.inputAnalyse()
-    self.shapePos = self.bubleSort(self.shapePos)
+    self.bubleSort(self.shapePos)
     self.scanArr()
 
   def inputAnalyse(self):
@@ -46,6 +45,14 @@ class cutSlice:
     posShape = self.shapePos
 
     while notFinised:
+      if len(posShape) == 0:
+        if x_start + 1 <= self.c:
+          posShape = self.shapePos
+          x_start += 1
+        else:
+          x_start, y_start, x_left, y_left = nextRow()
+          posShape = self.shapePos
+
       if self.checkMinIngre(x_start,y_start,posShape[test]):
         x_end, y_end = self.convert(posShape[test])
         x_end -= 1
@@ -57,20 +64,34 @@ class cutSlice:
         x_left = self.amountLeft(y_start, x_end + 1, "x")
 
         if x_left <= 0:
-          x_start = 0
-          
-          y_left = self.amountLeft(x_start, 0,"y")
-          y_start = self.r - y_left
-          x_left = self.amountLeft(0,y_start,"x")
-          posShape = self.shapePos
-          posShape = self.scanShape(x_left, y_left)
-        
+          x_start, y_start, x_left, y_left = nextRow()
+
         else:
           x_start = self.c - x_left
-          posShape = self.scanShape(posShape,x_left, self.r)
-      else:
-        test += 1
 
+          y_left = self.amountLeft(x_start, 0,"y")
+          y_start = self.r - y_left
+          
+        posShape = self.shapePos
+        posShape = self.scanShape(posShape,x_left, y_left)
+      else:
+        print "posShape: ",posShape
+        print "shapePos: ",self.shapePos
+        del posShape[0]
+  
+  def nextRow():
+    x_start = -1
+          
+    y_left = 0
+    while y_left == 0:
+      x_start += 1
+
+      y_left = self.amountLeft(x_start, 0,"y")
+      y_start = self.r - y_left
+
+    x_left = self.amountLeft(x_start,y_start,"x")
+    return x_start, y_start, x_left, y_left
+  
   def draw(self,ys,xs,ye,xe):
     self.arr[ys:ye,xs:xe] = 255
   
@@ -85,7 +106,7 @@ class cutSlice:
           break
 
     if dir == "y":
-      for y in range(self,row, self.r):
+      for y in range(row, self.r):
         if self.arr[y, column] != 255:
           amount += 1
         elif amount != 0:
