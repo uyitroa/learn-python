@@ -35,8 +35,8 @@ class Loli:
 				my_grille = np.array(self.grille)
 				columnlist = self.remove_loist([1,2,3,4,5,6,7,8,9],list(set(self.number).intersection(list(my_grille[:,x]))))
 
-				self.possibility.append([squarelist,linelist,columnlist])
-				#list would be like: [[[square,square1,square2],[line,line1,line2],[column,column1]],[2square1,2square2],[2line,2line1]...						
+				self.possibility.append([(y,x),squarelist,linelist,columnlist])
+				#list would be like: [[(4,3),[square,square1,square2],[line,line1,line2],[column,column1]],[2square1,2square2],[2line,2line1]...						
 				
 	def check(self):
 		self.find_possbility()
