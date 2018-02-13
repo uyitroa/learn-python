@@ -15,9 +15,10 @@ class Loli:
 	def __init__(self,grille):
 		self.grille = grille
 		self.number = [1,2,3,4,5,6,7,8,9]
+		self.possibility = []
 	
-	def main(self):
-
+	def find_possibility(self):		
+		#list of possib of each empty case line 39 plz
 		for y in range(len(self.grille)):
 			line = self.grille[y]
 			indices = [i for i, x in enumerate(my_list) if x == 0] # indexes of 0
@@ -26,13 +27,19 @@ class Loli:
 				# start with square
 				known = self.grille[square_x:square_x+3] + self.grille[square_y:square_y+3]
 				squarelist = self.remove_list([1,2,3,4,5,6,7,8,9],list(set(self.number).intersection(known)))
+
 				#line
 				linelist = self.remove_list([1,2,3,4,5,6,7,8,9],list(set(self.number).intersection(line)))
+			
 				#column
 				my_grille = np.array(self.grille)
 				columnlist = self.remove_loist([1,2,3,4,5,6,7,8,9],list(set(self.number).intersection(list(my_grille[:,x]))))
-				
 
+				self.possibility.append([squarelist,linelist,columnlist])
+				#list would be like: [[[square,square1,square2],[line,line1,line2],[column,column1]],[2square1,2square2],[2line,2line1]...						
+				
+	def check(self):
+		self.find_possbility()
 	def get_square(self,y,x): # which square at the position
 		# args: y,x
 		# return square y, square x
